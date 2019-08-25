@@ -4,8 +4,5 @@ namespace tinyfjing {
 
     namespace compiler {
 
-
-
-
     }
 }
