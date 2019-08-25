@@ -72,6 +72,8 @@ namespace tinyfjing {
             typedef std::vector<Ptr> List;
 
             CodeToken::List tokens;
+
+            CodeFile::Ptr Parse(const string_t &code);
         };
 
 
