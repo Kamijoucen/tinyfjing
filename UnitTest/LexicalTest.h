@@ -1,14 +1,15 @@
 #ifndef TINYFJING_LEXICALTEST_H
 #define TINYFJING_LEXICALTEST_H
 
-#include <../gtest/include/gtest/gtest.h>
+#include <gtest/gtest.h>
 
-using namespace std;
-
-TEST(LexicalTest, tokens)
+TEST(AAA, Qq)
 {
-    cout << "hello world" << endl;
+//    using namespace std;
+//    using namespace tinyfjing;
+//    using namespace tinyfjing::compiler;
+//    auto code = ReadAnsiFile(T("D:\\dev\\codework\\clion\\tinyfjing\\TestCaese\\hello.txt"));
+//    CodeFile::Ptr ptr = CodeFile::Parse(code);
 }
-
 
 #endif //TINYFJING_LEXICALTEST_H

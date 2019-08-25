@@ -16,8 +16,8 @@ namespace tinyfjing {
 
             //----------------------------------------
 
-            Var,            // 变量定义
-            Global,         // 全局定义
+            Var,            // var
+            Global,         // global
             False,          // false
             True,           // true
             Return,         // return
@@ -73,7 +73,7 @@ namespace tinyfjing {
 
             CodeToken::List tokens;
 
-            CodeFile::Ptr Parse(const string_t &code);
+            static CodeFile::Ptr Parse(const string_t &code);
         };
 
 
