@@ -1,9 +1,10 @@
+module test
+import system
 
-
-def testFunction(a)
-    if a >= 1 and a <= 100
-        while a <= 100
-
+def testFunction(a) :
+    if a >= 1 and a <= 100 :
+        while a <= 100 :
+            print(a)
         end_while
     end_if
 end_def
