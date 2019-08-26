@@ -3,11 +3,9 @@ project(tinyfjing)
 
 set(CMAKE_CXX_STANDARD 14)
 
-
 add_subdirectory(gtest Srouce)
 
 include_directories(gtest/include Srouce)
-
 
 set(LIBRARIES gtest pthread)
 
