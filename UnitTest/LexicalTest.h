@@ -10,9 +10,9 @@ using namespace std;
 using namespace tinyfjing;
 using namespace tinyfjing::compiler;
 
-TEST(aa, q)
+TEST(Lexical, comment)
 {
-    auto code = ReadAnsiFile(T("D:\\dev\\codework\\clion\\tinyfjing\\TestCaese\\hello.txt"));
+    auto code = T("-- b\n--a");
     CodeFile::Ptr ptr = CodeFile::Parse(code);
 }
 

@@ -30,7 +30,11 @@ namespace tinyfjing {
 
             State state = State::Begin;
 
-            auto AddToken = [&]() {
+            auto AddToken = [&](int length, CodeTokenType type) {
+                if (type == CodeTokenType::Comment) {
+                    std::cout << T("comment") << std::endl;
+                    return;
+                }
             };
 
             while (auto c = *reading) {
@@ -95,11 +99,18 @@ namespace tinyfjing {
                     case State::InComment:
                         if (c == T('\n')) {
                             // todo AddToken CodeTokenType::Comment
+                            AddToken(reading - begin, CodeTokenType::Comment);
+                            begin = nullptr;
+                            state = State::Begin;
                         }
                         break;
                     case State::InString:
                         if (c == T('"')) {
                             // todo AddToken String
+                            begin++; // 这里 +1 使用为string可能为空串例如：""
+                            AddToken(reading - begin, CodeTokenType::String);
+                            state = State::Begin;
+                            begin = nullptr;
                         }
                         break;
                     case State::InIdentifier:
@@ -113,6 +124,15 @@ namespace tinyfjing {
                         break;
                 }
                 reading++;
+            }
+
+            // 如果达到文件末尾，且尚未回到Begin状态，这里用来处理最后一个token
+            switch (state) {
+                case State::Begin:
+                    // 不做处理
+                    break;
+                default:
+                    break;
             }
 
 
