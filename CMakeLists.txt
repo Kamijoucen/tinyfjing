@@ -3,6 +3,11 @@ project(tinyfjing)
 
 set(CMAKE_CXX_STANDARD 14)
 
+set(CMAKE_CXX_FLAGS_RELEASE "$ENV{CXXFLAGS} -Wall")
+
+add_definitions(-O3)
+add_definitions(-Wall)
+
 add_subdirectory(gtest Srouce)
 
 include_directories(gtest/include Srouce)
