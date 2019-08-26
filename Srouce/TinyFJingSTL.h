@@ -16,7 +16,7 @@
 
 namespace tinyfjing
 {
-#ifdef _UNICODE_TINYMOE
+#ifdef _UNICODE_TINYFJING
     typedef wchar_t char_t;
 	typedef std::wstring string_t;
 	typedef std::wifstream ifstream_t;

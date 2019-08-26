@@ -1,4 +1,5 @@
 #include <gtest/gtest.h>
+#include "LexicalTest.h"
 
 GTEST_API_ int main(int argc, char** argv)
 {

@@ -19,7 +19,7 @@ namespace tinyfjing {
         buffer.resize((size_t) pos);
         i.read(&buffer[0], pos);
 
-#ifdef _UNICODE_TINYMOE
+#ifdef _UNICODE_TINYFJING
         return atow(buffer);
 #else
         return buffer;

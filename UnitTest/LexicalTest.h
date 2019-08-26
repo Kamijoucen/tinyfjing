@@ -1,9 +1,9 @@
 #ifndef TINYFJING_LEXICALTEST_H
 #define TINYFJING_LEXICALTEST_H
 
-#include <gtest/gtest.h>
+#include "gtest/gtest.h"
 
-TEST(AAA, Qq)
+TEST(aa, q)
 {
 //    using namespace std;
 //    using namespace tinyfjing;
