@@ -79,7 +79,9 @@ namespace tinyfjing {
                         } else if (c == T('.') && std::isdigit(reading[1])) {
                             state = State::InFloat;
                         } else {
-                            // todo AddToken
+                            AddToken(reading - begin, CodeTokenType::Integer);
+                            begin = nullptr;
+                            state = State::Begin;
                         }
                         break;
                     case State::InFloat:

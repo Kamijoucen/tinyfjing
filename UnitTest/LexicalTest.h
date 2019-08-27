@@ -16,4 +16,10 @@ TEST(Lexical, comment)
     CodeFile::Ptr ptr = CodeFile::Parse(code);
 }
 
+TEST(Lexical, number)
+{
+    auto code = T("30\n12.4");
+    CodeFile::Ptr ptr = CodeFile::Parse(code);
+}
+
 #endif //TINYFJING_LEXICALTEST_H
