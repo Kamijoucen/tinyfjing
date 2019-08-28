@@ -11,7 +11,7 @@ using namespace std;
 using namespace tinyfjing;
 using namespace tinyfjing::compiler;
 
-TEST(Lexical, inIdentifier)
+TEST(Lexical, identifier)
 {
     auto code = T("name true\n\tadd  var");
     CodeFile::Ptr ptr = CodeFile::Parse(code);
@@ -49,6 +49,38 @@ TEST(Lexical, number)
     ASSERT_EQ(ptr->tokens[2].str, "3");
     ASSERT_EQ(ptr->tokens[2].tokenType, CodeTokenType::Integer);
     ASSERT_EQ(ptr->tokens[2].data.int_value, 3);
+}
+
+TEST(Lexical, string)
+{
+    auto code = T("a1 \"fjing\" sfc\n55\"lisicen\"");
+    CodeFile::Ptr ptr = CodeFile::Parse(code);
+
+    ASSERT_EQ(ptr->tokens.size(), 5);
+
+    ASSERT_EQ(ptr->tokens[0].str, "a1");
+    ASSERT_EQ(ptr->tokens[0].tokenType, CodeTokenType::Identifier);
+
+    ASSERT_EQ(ptr->tokens[1].str, "fjing");
+    ASSERT_EQ(ptr->tokens[1].tokenType, CodeTokenType::String);
+
+    ASSERT_EQ(ptr->tokens[2].str, "sfc");
+    ASSERT_EQ(ptr->tokens[2].tokenType, CodeTokenType::Identifier);
+
+    ASSERT_EQ(ptr->tokens[3].str, "55");
+    ASSERT_EQ(ptr->tokens[3].tokenType, CodeTokenType::Integer);
+    ASSERT_EQ(ptr->tokens[3].data.int_value, 55);
+
+    ASSERT_EQ(ptr->tokens[4].str, "lisicen");
+    ASSERT_EQ(ptr->tokens[4].tokenType, CodeTokenType::String);
+
+}
+
+TEST(a, a)
+{
+    auto code = T("\"b\" a\n5");
+    CodeFile::Ptr ptr = CodeFile::Parse(code);
+    ASSERT_EQ(ptr->tokens.size(), 3);
 }
 
 #endif //TINYFJING_LEXICALTEST_H
