@@ -1,7 +1,5 @@
 #include "TinyFJingLexicalAnalyzer.h"
 
-#include <utility>
-
 namespace tinyfjing {
 
     namespace compiler {
@@ -32,19 +30,52 @@ namespace tinyfjing {
 
             State state = State::Begin;
 
+            auto NextChar = [&]() {
+                if (*reading == T('\n')) {
+                    column = 1;
+                    row += 1;
+                } else {
+                    column++;
+                }
+            };
+
             auto AddToken = [&](int length, CodeTokenType type) {
                 if (type == CodeTokenType::Comment) {
-                    std::cout << T("comment") << std::endl;
+                    return;
                 }
-
-                auto tokenBeing = begin ? reading : begin;
+                auto tokenBeing = begin ? begin : reading;
                 string_t strValue(tokenBeing, tokenBeing + length);
 
                 if (type == CodeTokenType::Identifier) {
-                    // todo 这里需要检查是否是identifer是否是关键字
+                    type =
+                            strValue == T("var") ? CodeTokenType::Var :
+                            strValue == T("def") ? CodeTokenType::Def :
+                            strValue == T("true") ? CodeTokenType::True :
+                            strValue == T("false") ? CodeTokenType::False :
+                            strValue == T("return") ? CodeTokenType::Return :
+                            strValue == T("break") ? CodeTokenType::Break :
+                            strValue == T("continue") ? CodeTokenType::Continue :
+                            strValue == T("if") ? CodeTokenType::If :
+                            strValue == T("else") ? CodeTokenType::Else :
+                            strValue == T("while") ? CodeTokenType::While :
+                            strValue == T("do") ? CodeTokenType::Do :
+                            CodeTokenType::Identifier;
                 }
 
                 CodeToken token(type, row, column, strValue);
+                switch (type) {
+                    case CodeTokenType::Integer:
+                        token.data.int_value = std::stoi(strValue);
+                        break;
+                    case CodeTokenType::Float:
+                        token.data.float_value = std::stof(strValue);
+                        break;
+                    case CodeTokenType::Double:
+                        token.data.double_value = std::stod(strValue);
+                        break;
+                    default:
+                        break;
+                }
                 file->tokens.push_back(std::move(token));
             };
 
@@ -68,8 +99,6 @@ namespace tinyfjing {
                             case T('\r'):
                                 break;
                             case T('\n'):
-                                row += 1;
-                                column = 1;
                                 break;
                             default:
                                 if (std::isalpha(c) || c == T('_')) {
@@ -100,6 +129,9 @@ namespace tinyfjing {
                             // 不做处理
                         } else {
                             // AddToken
+                            AddToken(reading - begin, CodeTokenType::Float);
+                            begin = nullptr;
+                            state = State::Begin;
                         }
                         break;
                     case State::InPreComment:
@@ -107,11 +139,11 @@ namespace tinyfjing {
                             state = State::InComment;
                         } else {
                             // todo AddToken CodeTokenType::Sub
+
                         }
                         break;
                     case State::InComment:
                         if (c == T('\n')) {
-                            // todo AddToken CodeTokenType::Comment
                             AddToken(reading - begin, CodeTokenType::Comment);
                             begin = nullptr;
                             state = State::Begin;
@@ -119,8 +151,7 @@ namespace tinyfjing {
                         break;
                     case State::InString:
                         if (c == T('"')) {
-                            // todo AddToken String
-                            begin++; // 这里 +1 使用为string可能为空串例如：""
+                            begin++; // 这里 +1 忽略掉字符串的第一个 “
                             AddToken(reading - begin, CodeTokenType::String);
                             state = State::Begin;
                             begin = nullptr;
@@ -130,12 +161,15 @@ namespace tinyfjing {
                         if (std::isdigit(c) || std::isalpha(c) || c == T('_') || c == T('.') || c == T('-')) {
                             // 不做处理
                         } else {
-                            // todo AddToken Identifier
+                            AddToken(reading - begin, CodeTokenType::Identifier);
+                            state = State::Begin;
+                            begin = nullptr;
                         }
                         break;
                     default:
                         break;
                 }
+                NextChar();
                 reading++;
             }
 
@@ -144,12 +178,21 @@ namespace tinyfjing {
                 case State::Begin:
                     // 不做处理
                     break;
+                case State::InIdentifier:
+                    AddToken(reading - begin, CodeTokenType::Identifier);
+                    break;
+                case State::InInteger:
+                    AddToken(reading - begin, CodeTokenType::Integer);
+                    break;
+                case State::InFloat:
+                    AddToken(reading - begin, CodeTokenType::Float);
+                    break;
                 default:
                     break;
             }
 
 
-            return nullptr;
+            return file;
         }
     }
 }

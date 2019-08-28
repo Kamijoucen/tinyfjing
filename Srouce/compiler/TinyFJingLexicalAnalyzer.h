@@ -12,13 +12,15 @@ namespace tinyfjing {
             String,         // 字符串
             Integer,        // 整型数字
             Float,          // 浮点数
+            Double,         // 双精度浮点
             Identifier,     // 标识符
 
             //----------------------------------------
 
             Var,            // var
-            Global,         // global
-            False,          // false
+            Def,            // def
+//            Global,         // global
+                    False,          // false
             True,           // true
             Return,         // return
             Break,          // break
@@ -64,15 +66,21 @@ namespace tinyfjing {
             CodeTokenType tokenType = CodeTokenType::Unknown;
             long row = -1;
             long column = -1;
-            string_t value;
+            string_t str;
+
+            union {
+                int int_value;
+                float float_value;
+                double double_value;
+            } data{};
 
             CodeToken() = default;
 
-            CodeToken(CodeTokenType tokenType, long row, long column, string_t value);
+            CodeToken(CodeTokenType tokenType, long row, long column, string_t str);
         };
 
-        inline CodeToken::CodeToken(CodeTokenType tokenType, long row, long column, string_t value)
-                : tokenType(tokenType), row(row), column(column), value(std::move(value)) {}
+        inline CodeToken::CodeToken(CodeTokenType tokenType, long row, long column, string_t str)
+                : tokenType(tokenType), row(row), column(column), str(std::move(str)) {}
 
 
         struct CodeFile {
