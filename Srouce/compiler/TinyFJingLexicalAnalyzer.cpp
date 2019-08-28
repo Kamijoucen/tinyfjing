@@ -1,5 +1,7 @@
 #include "TinyFJingLexicalAnalyzer.h"
 
+#include <utility>
+
 namespace tinyfjing {
 
     namespace compiler {
@@ -33,8 +35,17 @@ namespace tinyfjing {
             auto AddToken = [&](int length, CodeTokenType type) {
                 if (type == CodeTokenType::Comment) {
                     std::cout << T("comment") << std::endl;
-                    return;
                 }
+
+                auto tokenBeing = begin ? reading : begin;
+                string_t strValue(tokenBeing, tokenBeing + length);
+
+                if (type == CodeTokenType::Identifier) {
+                    // todo 这里需要检查是否是identifer是否是关键字
+                }
+
+                CodeToken token(type, row, column, strValue);
+                file->tokens.push_back(std::move(token));
             };
 
             while (auto c = *reading) {
