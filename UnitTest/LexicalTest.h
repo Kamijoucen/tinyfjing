@@ -78,9 +78,9 @@ TEST(Lexical, string)
 
 TEST(a, a)
 {
-    auto code = T("\"b\" a\n5");
+    auto code = T("5\"a\"");
     CodeFile::Ptr ptr = CodeFile::Parse(code);
-    ASSERT_EQ(ptr->tokens.size(), 3);
+    ASSERT_EQ(ptr->tokens.size(), 2);
 }
 
 #endif //TINYFJING_LEXICALTEST_H

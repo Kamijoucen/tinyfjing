@@ -73,17 +73,13 @@ namespace tinyfjing {
                     case CodeTokenType::Float:
                         token.data.float_value = std::stof(strValue);
                         break;
-                    case CodeTokenType::Double:
-                        token.data.double_value = std::stod(strValue);
-                        break;
+//                    case CodeTokenType::Double:
+//                        token.data.double_value = std::stod(strValue);
+//                        break;
                     default:
                         break;
                 }
                 file->tokens.push_back(std::move(token));
-
-                state = State::Begin;
-                beginColumn = 0;
-                begin = nullptr;
             };
 
             while (auto c = *reading) {
@@ -132,6 +128,9 @@ namespace tinyfjing {
                             state = State::InFloat;
                         } else {
                             AddToken(reading - begin, CodeTokenType::Integer);
+                            state = State::Begin;
+                            beginColumn = 0;
+                            begin = nullptr;
                         }
                         break;
                     case State::InFloat:
@@ -139,6 +138,9 @@ namespace tinyfjing {
                             // 不做处理
                         } else {
                             AddToken(reading - begin, CodeTokenType::Float);
+                            state = State::Begin;
+                            beginColumn = 0;
+                            begin = nullptr;
                         }
                         break;
                     case State::InPreComment:
@@ -152,12 +154,18 @@ namespace tinyfjing {
                     case State::InComment:
                         if (c == T('\n')) {
                             AddToken(reading - begin, CodeTokenType::Comment);
+                            state = State::Begin;
+                            beginColumn = 0;
+                            begin = nullptr;
                         }
                         break;
                     case State::InString:
                         if (c == T('"')) {
                             begin++; // 这里 +1 忽略掉字符串的第一个 "
                             AddToken(reading - begin, CodeTokenType::String);
+                            state = State::Begin;
+                            beginColumn = 0;
+                            begin = nullptr;
 //                            /**
 //                             * 如果解析 abc"def" 最下方reading++会导致解析完abc时碰到 "
 //                             * 结束abc的解析而略过 " 的解析而将 def 识别成identifier
@@ -172,13 +180,16 @@ namespace tinyfjing {
                             // 不做处理
                         } else {
                             AddToken(reading - begin, CodeTokenType::Identifier);
-                            /**
-                             * 如果解析 abc"def" 最下方reading++会导致解析完abc时碰到 "
-                             * 结束abc的解析而略过 " 的解析而将 def 识别成identifier
-                             */
-                            if (!std::isspace(c)) {
-                                reading--;
-                            }
+                            state = State::Begin;
+                            beginColumn = 0;
+                            begin = nullptr;
+//                            /**
+//                             * 如果解析 abc"def" 最下方reading++会导致解析完abc时碰到 "
+//                             * 结束abc的解析而略过 " 的解析而将 def 识别成identifier
+//                             */
+//                            if (!std::isspace(c)) {
+//                                reading--;
+//                            }
                         }
                         break;
                     default:
