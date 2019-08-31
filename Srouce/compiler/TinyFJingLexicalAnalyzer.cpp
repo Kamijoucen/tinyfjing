@@ -130,6 +130,7 @@ namespace tinyfjing {
                             AddToken(reading - begin, CodeTokenType::Integer);
                             state = State::Begin;
                             beginColumn = 0;
+                            reading--;
                             begin = nullptr;
                         }
                         break;
@@ -140,6 +141,7 @@ namespace tinyfjing {
                             AddToken(reading - begin, CodeTokenType::Float);
                             state = State::Begin;
                             beginColumn = 0;
+                            reading--;
                             begin = nullptr;
                         }
                         break;
@@ -156,6 +158,7 @@ namespace tinyfjing {
                             AddToken(reading - begin, CodeTokenType::Comment);
                             state = State::Begin;
                             beginColumn = 0;
+                            reading--;
                             begin = nullptr;
                         }
                         break;
@@ -165,14 +168,8 @@ namespace tinyfjing {
                             AddToken(reading - begin, CodeTokenType::String);
                             state = State::Begin;
                             beginColumn = 0;
+                            // 这里就不进行reading--，因为String的最后一个 " 可以直接忽略
                             begin = nullptr;
-//                            /**
-//                             * 如果解析 abc"def" 最下方reading++会导致解析完abc时碰到 "
-//                             * 结束abc的解析而略过 " 的解析而将 def 识别成identifier
-//                             */
-//                            if (!std::isspace(c)) {
-//                                reading--;
-//                            }
                         }
                         break;
                     case State::InIdentifier:
@@ -182,14 +179,8 @@ namespace tinyfjing {
                             AddToken(reading - begin, CodeTokenType::Identifier);
                             state = State::Begin;
                             beginColumn = 0;
+                            reading--;
                             begin = nullptr;
-//                            /**
-//                             * 如果解析 abc"def" 最下方reading++会导致解析完abc时碰到 "
-//                             * 结束abc的解析而略过 " 的解析而将 def 识别成identifier
-//                             */
-//                            if (!std::isspace(c)) {
-//                                reading--;
-//                            }
                         }
                         break;
                     default:
