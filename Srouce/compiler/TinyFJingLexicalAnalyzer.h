@@ -73,7 +73,7 @@ namespace tinyfjing {
                 int int_value;
                 float float_value;
 //                double double_value;
-            } data{};
+            } data;
 
             CodeToken() = default;
 
@@ -81,7 +81,7 @@ namespace tinyfjing {
         };
 
         inline CodeToken::CodeToken(CodeTokenType tokenType, long row, long column, string_t str)
-                : tokenType(tokenType), row(row), column(column), str(std::move(str)) {}
+                : tokenType(tokenType), row(row), column(column), str(std::move(str)), data({}) {}
 
 
         struct CodeFile {
