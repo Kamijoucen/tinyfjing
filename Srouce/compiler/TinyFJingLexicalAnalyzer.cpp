@@ -61,6 +61,10 @@ namespace tinyfjing {
                             strValue == T("else") ? CodeTokenType::Else :
                             strValue == T("while") ? CodeTokenType::While :
                             strValue == T("do") ? CodeTokenType::Do :
+                            strValue == T("and") ? CodeTokenType::And :
+                            strValue == T("or") ? CodeTokenType::Or :
+                            strValue == T("not") ? CodeTokenType::Not :
+                            strValue == T("for") ? CodeTokenType::For :
                             CodeTokenType::Identifier;
                 }
 
@@ -86,10 +90,22 @@ namespace tinyfjing {
                 switch (state) {
                     case State::Begin:
                         switch (c) {
+                            case T('+'):
+                                AddToken(1, CodeTokenType::Add);
+                                break;
                             case T('-'):
                                 begin = reading;
                                 beginColumn = column;
                                 state = State::InPreComment;
+                                break;
+                            case T(','):
+                                AddToken(1, CodeTokenType::Comma);
+                                break;
+                            case T('*'):
+                                AddToken(1, CodeTokenType::Mul);
+                                break;
+                            case T('/'):
+                                AddToken(1, CodeTokenType::Div);
                                 break;
                             case T('"'):
                                 begin = reading;
@@ -97,8 +113,10 @@ namespace tinyfjing {
                                 state = State::InString;
                                 break;
                             case T('('):
+                                AddToken(1, CodeTokenType::LeftParen);
                                 break;
                             case T(')'):
+                                AddToken(1, CodeTokenType::RightParen);
                                 break;
                             case T(' '):
                             case T('\t'):
@@ -149,8 +167,11 @@ namespace tinyfjing {
                         if (c == T('-')) {
                             state = State::InComment;
                         } else {
-                            // todo AddToken CodeTokenType::Sub
-
+                            AddToken(reading - begin, CodeTokenType::Sub);
+                            state = State::Begin;
+                            beginColumn = 0;
+                            reading--;
+                            begin = nullptr;
                         }
                         break;
                     case State::InComment:
@@ -183,8 +204,6 @@ namespace tinyfjing {
                             begin = nullptr;
                         }
                         break;
-                    default:
-                        break;
                 }
                 NextChar();
                 reading++;
@@ -204,12 +223,10 @@ namespace tinyfjing {
                 case State::InFloat:
                     AddToken(reading - begin, CodeTokenType::Float);
                     break;
-                default:
-                    // todo throws exception
+                case State::InString:
                     std::cout << "token error" << std::endl;
                     break;
             }
-
 
             return file;
         }

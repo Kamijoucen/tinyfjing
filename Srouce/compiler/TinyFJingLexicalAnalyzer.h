@@ -19,8 +19,7 @@ namespace tinyfjing {
 
             Var,            // var
             Def,            // def
-//            Global,         // global
-                    False,          // false
+            False,          // false
             True,           // true
             Return,         // return
             Break,          // break
@@ -29,6 +28,7 @@ namespace tinyfjing {
             Else,           // else
             While,          // while
             Do,             // do
+            For,            // for
             End,            // end
 
             //----------------------------------------

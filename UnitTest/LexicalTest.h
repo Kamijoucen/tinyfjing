@@ -76,11 +76,4 @@ TEST(Lexical, string)
 
 }
 
-TEST(a, a)
-{
-    auto code = T("5\"a\"");
-    CodeFile::Ptr ptr = CodeFile::Parse(code);
-    ASSERT_EQ(ptr->tokens.size(), 2);
-}
-
 #endif //TINYFJING_LEXICALTEST_H
