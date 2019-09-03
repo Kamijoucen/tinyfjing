@@ -1,4 +1,4 @@
-#include "TinyFJingLexicalAnalyzer.h"
+#include "TinyFJingLexical.h"
 
 namespace tinyfjing {
 

@@ -1,10 +1,10 @@
 #ifndef TINYFJING_LEXICALTEST_H
 #define TINYFJING_LEXICALTEST_H
 
-#include <compiler/TinyFJingLexicalAnalyzer.h>
+#include <compiler/TinyFJingLexical.h>
 #include "UnitTest.h"
 #include "TinyFJingSTL.h"
-#include "compiler/TinyFJingLexicalAnalyzer.h"
+#include "compiler/TinyFJingLexical.h"
 #include "gtest/gtest.h"
 
 using namespace std;
