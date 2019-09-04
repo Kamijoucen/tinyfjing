@@ -31,6 +31,7 @@ namespace tinyfjing {
             For,            // for
             End,            // end
             Module,         // module
+            Using,          // using
 
             //----------------------------------------
 

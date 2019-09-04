@@ -65,7 +65,9 @@ namespace tinyfjing {
                             strValue == T("or") ? CodeTokenType::Or :
                             strValue == T("not") ? CodeTokenType::Not :
                             strValue == T("for") ? CodeTokenType::For :
+                            strValue == T("end") ? CodeTokenType::End :
                             strValue == T("module") ? CodeTokenType::Module :
+                            strValue == T("using") ? CodeTokenType::Using :
                             CodeTokenType::Identifier;
                 }
 
