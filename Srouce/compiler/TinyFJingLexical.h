@@ -30,6 +30,7 @@ namespace tinyfjing {
             Do,             // do
             For,            // for
             End,            // end
+            Module,         // module
 
             //----------------------------------------
 

@@ -1,5 +1,5 @@
 module test
-import system
+using system, my_fjing, echo
 
 var arr = {1,2,{1,3,5}}
 def testFunction(a)
