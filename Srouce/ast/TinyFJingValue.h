@@ -1,0 +1,10 @@
+#ifndef TINYFJING_TINYFJINGVALUE_H
+#define TINYFJING_TINYFJINGVALUE_H
+
+
+class TinyFJingValue {
+
+};
+
+
+#endif //TINYFJING_TINYFJINGVALUE_H

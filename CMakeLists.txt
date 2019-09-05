@@ -16,7 +16,7 @@ set(LIBRARIES gtest pthread)
 
 link_directories(gtest)
 
-add_executable(tinyfjing UnitTest/Main.cpp Srouce/TinyFJingSTL.h Srouce/compiler/TinyFJingLexical.cpp Srouce/compiler/TinyFJingLexical.h UnitTest/LexicalTest.h UnitTest/UnitTest.h Srouce/compiler/TinyFJingParser.cpp Srouce/compiler/TinyFJingParser.h Srouce/ast/TinyFJingAST.cpp Srouce/ast/TinyFJingAST.h Srouce/Message.h)
+add_executable(tinyfjing UnitTest/Main.cpp Srouce/TinyFJingSTL.h Srouce/compiler/TinyFJingLexical.cpp Srouce/compiler/TinyFJingLexical.h UnitTest/LexicalTest.h UnitTest/UnitTest.h Srouce/compiler/TinyFJingParser.cpp Srouce/compiler/TinyFJingParser.h Srouce/ast/TinyFJingAST.cpp Srouce/ast/TinyFJingAST.h Srouce/TinyFJingMessage.h Srouce/ast/TinyFJingValue.cpp Srouce/ast/TinyFJingValue.h)
 
 target_link_libraries(tinyfjing ${LIBRARIES})
 

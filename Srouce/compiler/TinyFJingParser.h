@@ -13,20 +13,22 @@ namespace tinyfjing {
         public:
             typedef std::shared_ptr<Module> Ptr;
             typedef std::weak_ptr<Module> WeakPtr;
+            typedef std::vector<ast::UsingStatementAst::Ptr> UsingList;
 
             string_t name;  // 模块名
-            std::vector<string_t> usings; // 引用的其他模块
+            UsingList usings;
 
             static Module::Ptr Parse(const CodeFile::Ptr &ptr);
         };
 
 
-        namespace parser {
+        struct Parser {
 
+            typedef std::vector<CodeToken>::iterator Iterator;
 
-
-        }
-
+            static ast::UsingStatementAst::Ptr
+            ParseUsingStatement(Parser::Iterator &reading, Parser::Iterator &end);
+        };
     }
 
 }
