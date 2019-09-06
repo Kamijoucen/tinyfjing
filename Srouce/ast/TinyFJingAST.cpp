@@ -4,7 +4,11 @@ namespace tinyfjing {
 
     namespace ast {
 
-        void UsingStatementAst::Eval() {
+        void UsingStatementAst::eval() {
+
+        }
+
+        void IfStatementAst::eval() {
 
         }
     }

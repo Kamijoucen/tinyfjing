@@ -12,11 +12,10 @@ namespace tinyfjing {
             typedef std::shared_ptr<BaseAst> Ptr;
             typedef std::weak_ptr<BaseAst> WeakPtr;
 
-            virtual void Eval() = 0;
+            virtual void eval() = 0;
 
             virtual ~BaseAst() = 0;
         };
-
 
         class UsingStatementAst : public BaseAst {
         public:
@@ -25,9 +24,23 @@ namespace tinyfjing {
 
             std::vector<string_t> usings;
 
-            void Eval() override;
+            void eval() override;
 
             ~UsingStatementAst() override = default;
+        };
+
+        class IfStatementAst : public BaseAst {
+        public:
+            typedef std::shared_ptr<IfStatementAst> Ptr;
+            typedef std::weak_ptr<IfStatementAst> WeakPtr;
+
+            void eval() override;
+
+            BaseAst::Ptr condition;
+            std::vector<BaseAst::Ptr> ifBody;
+
+
+            ~IfStatementAst() override = default;
         };
 
     }

@@ -14,9 +14,11 @@ namespace tinyfjing {
             typedef std::shared_ptr<Module> Ptr;
             typedef std::weak_ptr<Module> WeakPtr;
             typedef std::vector<ast::UsingStatementAst::Ptr> UsingList;
+            typedef std::vector<ast::BaseAst::Ptr> CodesList;
 
             string_t name;  // 模块名
             UsingList usings;
+            CodesList codes;
 
             static Module::Ptr Parse(const CodeFile::Ptr &ptr);
         };
@@ -28,6 +30,10 @@ namespace tinyfjing {
 
             static ast::UsingStatementAst::Ptr
             ParseUsingStatement(Parser::Iterator &reading, Parser::Iterator &end);
+
+            static ast::IfStatementAst::Ptr
+            ParseIfStatement(Parser::Iterator &reading, Parser::Iterator &end);
+
         };
     }
 

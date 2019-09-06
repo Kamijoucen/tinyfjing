@@ -34,6 +34,21 @@ namespace tinyfjing {
                         ptr->usings.push_back(std::move(usingNode));
                         break;
                     }
+                    case CodeTokenType::Var: {
+                        break;
+                    }
+                    case CodeTokenType::Identifier: {
+                        // 语句第一行出现Identifier通常是变量赋值，函数调用
+                        break;
+                    }
+                    case CodeTokenType::If: {
+                        auto ifNode = Parser::ParseIfStatement(reading, end);
+                        ptr->codes.push_back(std::move(ifNode));
+                        break;
+                    }
+                    case CodeTokenType::While: {
+                        break;
+                    }
                     default:
                         break;
                 }
@@ -70,6 +85,12 @@ namespace tinyfjing {
                 }
             }
             return ptr;
+        }
+
+        ast::IfStatementAst::Ptr
+        Parser::ParseIfStatement(Parser::Iterator &reading, Parser::Iterator &end) {
+
+            return nullptr;
         }
     }
 
