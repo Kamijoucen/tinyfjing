@@ -17,6 +17,20 @@ namespace tinyfjing {
             virtual ~BaseAst() = 0;
         };
 
+        class BinaryExpressionAst : public BaseAst {
+        public:
+            typedef std::shared_ptr<BinaryExpressionAst> Ptr;
+            typedef std::weak_ptr<BinaryExpressionAst> WeakPtr;
+
+            void eval() override;
+
+            BaseAst::Ptr left;
+            BaseAst::Ptr right;
+            // todo op
+
+            ~BinaryExpressionAst() override = default;
+        };
+
         class UsingStatementAst : public BaseAst {
         public:
             typedef std::shared_ptr<UsingStatementAst> Ptr;

@@ -11,6 +11,10 @@ namespace tinyfjing {
         void IfStatementAst::eval() {
 
         }
+
+        void BinaryExpressionAst::eval() {
+
+        }
     }
 
 }
