@@ -14,7 +14,7 @@ namespace tinyfjing {
 
             virtual void eval() = 0;
 
-            virtual ~BaseAst() = 0;
+            virtual ~BaseAst() = default;
         };
 
         class BinaryExpressionAst : public BaseAst {
@@ -27,8 +27,6 @@ namespace tinyfjing {
             BaseAst::Ptr left;
             BaseAst::Ptr right;
             // todo op
-
-            ~BinaryExpressionAst() override = default;
         };
 
         class UsingStatementAst : public BaseAst {
@@ -39,8 +37,6 @@ namespace tinyfjing {
             std::vector<string_t> usings;
 
             void eval() override;
-
-            ~UsingStatementAst() override = default;
         };
 
         class IfStatementAst : public BaseAst {
@@ -52,9 +48,6 @@ namespace tinyfjing {
 
             BaseAst::Ptr condition;
             std::vector<BaseAst::Ptr> ifBody;
-
-
-            ~IfStatementAst() override = default;
         };
 
     }

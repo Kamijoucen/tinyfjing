@@ -30,7 +30,7 @@ namespace tinyfjing {
             while (reading != end) {
                 switch (reading->tokenType) {
                     case CodeTokenType::Using: {
-                        auto usingNode = Parser::ParseUsingStatement(reading, end);
+                        auto usingNode = Parser::Statement::ParseUsingStatement(reading, end);
                         ptr->usings.push_back(std::move(usingNode));
                         break;
                     }
@@ -42,7 +42,7 @@ namespace tinyfjing {
                         break;
                     }
                     case CodeTokenType::If: {
-                        auto ifNode = Parser::ParseIfStatement(reading, end);
+                        auto ifNode = Parser::Statement::ParseIfStatement(reading, end);
                         ptr->codes.push_back(std::move(ifNode));
                         break;
                     }
@@ -59,7 +59,7 @@ namespace tinyfjing {
 
 
         ast::UsingStatementAst::Ptr
-        Parser::ParseUsingStatement(Parser::Iterator &reading, Parser::Iterator &end) {
+        Parser::Statement::ParseUsingStatement(Parser::Iterator &reading, Parser::Iterator &end) {
             using namespace ast;
             UsingStatementAst::Ptr ptr = std::shared_ptr<UsingStatementAst>();
 
@@ -88,7 +88,12 @@ namespace tinyfjing {
         }
 
         ast::IfStatementAst::Ptr
-        Parser::ParseIfStatement(Parser::Iterator &reading, Parser::Iterator &end) {
+        Parser::Statement::ParseIfStatement(Parser::Iterator &reading, Parser::Iterator &end) {
+            return nullptr;
+        }
+
+        ast::BaseAst::Ptr
+        Parser::Expression::ParseExpression(Parser::Iterator &reading, Parser::Iterator &end) {
 
             return nullptr;
         }

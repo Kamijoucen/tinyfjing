@@ -28,13 +28,22 @@ namespace tinyfjing {
 
             typedef std::vector<CodeToken>::iterator Iterator;
 
+            // 语句
+            struct Statement {
+                static ast::UsingStatementAst::Ptr
+                ParseUsingStatement(Parser::Iterator &reading, Parser::Iterator &end);
+
+                static ast::IfStatementAst::Ptr
+                ParseIfStatement(Parser::Iterator &reading, Parser::Iterator &end);
+            };
+
+            // 表达式，出现在语句中
+            struct Expression {
+                static ast::BaseAst::Ptr
+                ParseExpression(Parser::Iterator &reading, Parser::Iterator &end);
 
 
-            static ast::UsingStatementAst::Ptr
-            ParseUsingStatement(Parser::Iterator &reading, Parser::Iterator &end);
-
-            static ast::IfStatementAst::Ptr
-            ParseIfStatement(Parser::Iterator &reading, Parser::Iterator &end);
+            };
 
         };
     }

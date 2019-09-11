@@ -1,0 +1,14 @@
+
+Expr    ::= <Expr> '+' <Term>
+        |   <Expr> '-' <Term>
+        |   <Term>
+
+Term    ::= <Term> '*' <Factor>
+        |   <Term> '/' <Factor>
+        |   <Factor>
+
+Factor  ::= '(' <Expr> ')'
+        | NUM
+        | NAME
+
+
