@@ -93,6 +93,41 @@ namespace tinyfjing {
         }
 
         ast::BaseAst::Ptr
+        Parser::Expression::ParsePrimary(Parser::Iterator &reading, Parser::Iterator &end) {
+            if (reading == end) {
+                throw std::runtime_error(GetFormatMsg(T("TOKEN_ENDED")));
+            }
+            switch (reading->tokenType) {
+                case CodeTokenType::Integer:
+                    break;
+                case CodeTokenType::Float:
+                    break;
+                case CodeTokenType::Double:
+                    break;
+                case CodeTokenType::Identifier:
+                    break;
+                case CodeTokenType::False:
+                    break;
+                case CodeTokenType::True:
+                    break;
+                case CodeTokenType::LeftParen:
+                    break;
+                case CodeTokenType::RightParen:
+                    break;
+                case CodeTokenType::Add:
+                    break;
+                case CodeTokenType::Sub:
+                    break;
+                case CodeTokenType::Not:
+                    break;
+                default:
+                    break;
+            }
+            return nullptr;
+        }
+
+
+        ast::BaseAst::Ptr
         Parser::Expression::ParseExpression(Parser::Iterator &reading, Parser::Iterator &end) {
 
             return nullptr;
