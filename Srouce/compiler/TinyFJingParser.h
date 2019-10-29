@@ -45,6 +45,8 @@ namespace tinyfjing {
                 static ast::BaseAst::Ptr
                 ParsePrimary(Parser::Iterator &reading, Parser::Iterator &end);
 
+                static ast::BaseAst::Ptr
+                ParseNumber(Parser::Iterator &reading, Parser::Iterator &end);
             };
 
 

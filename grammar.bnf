@@ -3,6 +3,7 @@ Expr    ::= <Expr> '+' <Term>
         |   <Expr> '-' <Term>
         |   <Term>
 
+// 项
 Term    ::= <Term> '*' <Factor>
         |   <Term> '/' <Factor>
         |   <Factor>
@@ -15,6 +16,7 @@ Term    ::= <Term> '*' <Factor>
 //        |   NAME
 //        |   NUM
 
+// 因子
 Factor  ::= '(' <Expr> ')'
         |   NAME
         |   NUM

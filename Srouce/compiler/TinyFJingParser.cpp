@@ -132,6 +132,16 @@ namespace tinyfjing {
 
             return nullptr;
         }
+
+        ast::BaseAst::Ptr Parser::Expression::ParseNumber(Parser::Iterator &reading, Parser::Iterator &end) {
+            CodeTokenType tokenType = reading->tokenType;
+            if (tokenType != CodeTokenType::Float
+                && tokenType != CodeTokenType::Double
+                && tokenType != CodeTokenType::Integer) {
+                throw std::runtime_error(GetFormatMsg(T("TOKEN_ERROR")));
+            }
+            return tinyfjing::ast::BaseAst::Ptr();
+        }
     }
 
 }
