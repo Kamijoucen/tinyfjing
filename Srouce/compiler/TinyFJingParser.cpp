@@ -2,6 +2,7 @@
 
 #include <stdexcept>
 #include "TinyFJingMessage.h"
+#include "TinyFJingLexical.h"
 
 namespace tinyfjing {
 
@@ -93,7 +94,7 @@ namespace tinyfjing {
         }
 
         ast::BaseAst::Ptr
-        Parser::Expression::ParsePrimary(Parser::Iterator &reading, Parser::Iterator &end) {
+        Parser::Expression::ParsePrimaryExpression(Parser::Iterator &reading, Parser::Iterator &end) {
             if (reading == end) {
                 throw std::runtime_error(GetFormatMsg(T("TOKEN_ENDED")));
             }
@@ -129,18 +130,46 @@ namespace tinyfjing {
 
         ast::BaseAst::Ptr
         Parser::Expression::ParseExpression(Parser::Iterator &reading, Parser::Iterator &end) {
-
             return nullptr;
         }
 
-        ast::BaseAst::Ptr Parser::Expression::ParseNumber(Parser::Iterator &reading, Parser::Iterator &end) {
+        ast::BaseAst::Ptr
+        Parser::Expression::ParseNumberExpression(Parser::Iterator &reading, Parser::Iterator &end) {
+            using namespace value;
+            using namespace ast;
+            if (reading == end) {
+                throw std::runtime_error(GetFormatMsg(T("TOKEN_ENDED")));
+            }
+            BaseValue::Ptr node = nullptr;
+            switch (reading->tokenType) {
+                case CodeTokenType::Integer:
+                    node = std::make_shared<IntegerValue>(reading->data.int_value);
+                    break;
+                case CodeTokenType::Float:
+                    node = std::make_shared<IntegerValue>(reading->data.float_value);
+                    break;
+                case CodeTokenType::Double:
+                    node = std::make_shared<IntegerValue>(reading->data.double_value);
+                    break;
+                default:
+                    throw std::runtime_error(GetFormatMsg(T("TOKEN_ERROR")));
+            }
+            reading++;
+            return std::make_shared<NumberExpressionAst>(std::move(node));
+        }
+
+        ast::BaseAst::Ptr
+        Parser::Expression::ParseUnaryExpression(Parser::Iterator &reading, Parser::Iterator &end) {
+            if (reading == end) {
+                throw std::runtime_error(GetFormatMsg(T("TOKEN_ENDED")));
+            }
             CodeTokenType tokenType = reading->tokenType;
-            if (tokenType != CodeTokenType::Float
-                && tokenType != CodeTokenType::Double
-                && tokenType != CodeTokenType::Integer) {
+            if (tokenType != CodeTokenType::Not && tokenType != CodeTokenType::Add
+                && tokenType != CodeTokenType::Sub) {
                 throw std::runtime_error(GetFormatMsg(T("TOKEN_ERROR")));
             }
-            return tinyfjing::ast::BaseAst::Ptr();
+            // todo
+            return nullptr;
         }
     }
 

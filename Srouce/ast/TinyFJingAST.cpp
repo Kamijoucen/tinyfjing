@@ -1,20 +1,33 @@
 #include "TinyFJingAST.h"
 
+#include <utility>
+
+#include "TinyFJingValue.h"
+
 namespace tinyfjing {
 
     namespace ast {
 
-        void UsingStatementAst::eval() {
-
+        ValuePtr
+        UsingStatementAst::eval() {
+            return nullptr;
         }
 
-        void IfStatementAst::eval() {
-
+        ValuePtr
+        IfStatementAst::eval() {
+            return nullptr;
         }
 
-        void BinaryExpressionAst::eval() {
-
+        ValuePtr
+        BinaryExpressionAst::eval() {
+            return nullptr;
         }
+
+        ValuePtr
+        NumberExpressionAst::eval() {
+            return nullptr;
+        }
+        NumberExpressionAst::NumberExpressionAst(ValuePtr value) : value(std::move(value)) {}
     }
 
 }

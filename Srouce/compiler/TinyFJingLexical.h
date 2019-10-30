@@ -74,7 +74,7 @@ namespace tinyfjing {
             union {
                 int int_value;
                 float float_value;
-//                double double_value;
+                double double_value;
             } data;
 
             CodeToken() = default;

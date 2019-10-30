@@ -2,19 +2,34 @@
 #define TINYFJING_TINYFJINGAST_H
 
 #include "TinyFJingSTL.h"
+#include "TinyFJingValue.h"
 
 namespace tinyfjing {
 
     namespace ast {
+
+        using ValuePtr = value::BaseValue::Ptr;
 
         class BaseAst : public std::enable_shared_from_this<BaseAst> {
         public:
             typedef std::shared_ptr<BaseAst> Ptr;
             typedef std::weak_ptr<BaseAst> WeakPtr;
 
-            virtual void eval() = 0;
+            virtual ValuePtr eval() = 0;
 
             virtual ~BaseAst() = default;
+        };
+
+        class NumberExpressionAst : public BaseAst {
+        public:
+            typedef std::shared_ptr<NumberExpressionAst> Ptr;
+            typedef std::weak_ptr<NumberExpressionAst> WeakPtr;
+
+            ValuePtr value = nullptr;
+
+            explicit NumberExpressionAst(ValuePtr value);
+
+            ValuePtr eval() override;
         };
 
         class BinaryExpressionAst : public BaseAst {
@@ -22,7 +37,7 @@ namespace tinyfjing {
             typedef std::shared_ptr<BinaryExpressionAst> Ptr;
             typedef std::weak_ptr<BinaryExpressionAst> WeakPtr;
 
-            void eval() override;
+            ValuePtr eval() override;
 
             BaseAst::Ptr left;
             BaseAst::Ptr right;
@@ -36,7 +51,7 @@ namespace tinyfjing {
 
             std::vector<string_t> usings;
 
-            void eval() override;
+            ValuePtr eval() override;
         };
 
         class IfStatementAst : public BaseAst {
@@ -44,7 +59,7 @@ namespace tinyfjing {
             typedef std::shared_ptr<IfStatementAst> Ptr;
             typedef std::weak_ptr<IfStatementAst> WeakPtr;
 
-            void eval() override;
+            ValuePtr eval() override;
 
             BaseAst::Ptr condition;
             std::vector<BaseAst::Ptr> ifBody;

@@ -43,10 +43,13 @@ namespace tinyfjing {
                 ParseExpression(Parser::Iterator &reading, Parser::Iterator &end);
 
                 static ast::BaseAst::Ptr
-                ParsePrimary(Parser::Iterator &reading, Parser::Iterator &end);
+                ParsePrimaryExpression(Parser::Iterator &reading, Parser::Iterator &end);
 
                 static ast::BaseAst::Ptr
-                ParseNumber(Parser::Iterator &reading, Parser::Iterator &end);
+                ParseNumberExpression(Parser::Iterator &reading, Parser::Iterator &end);
+
+                static ast::BaseAst::Ptr
+                ParseUnaryExpression(Parser::Iterator &reading, Parser::Iterator &end);
             };
 
 
