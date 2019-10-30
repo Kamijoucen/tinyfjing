@@ -50,6 +50,7 @@ namespace tinyfjing {
             GT,             // >
             LE,             // <=
             GE,             // >=
+            Assign,         // ==
             EQ,             // =
             NE,             // <>
             And,            // and

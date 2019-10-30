@@ -10,6 +10,8 @@ namespace tinyfjing {
             enum class State {
                 Begin,
                 InPreComment,
+                InPreEq,
+                InEq,
                 InComment,
                 InInteger,
                 InFloat,
@@ -80,9 +82,9 @@ namespace tinyfjing {
                     case CodeTokenType::Float:
                         token.data.float_value = std::stof(strValue);
                         break;
-//                    case CodeTokenType::Double:
-//                        token.data.double_value = std::stod(strValue);
-//                        break;
+                    case CodeTokenType::Double:
+                        token.data.double_value = std::stod(strValue);
+                        break;
                     default:
                         break;
                 }
@@ -100,6 +102,11 @@ namespace tinyfjing {
                                 begin = reading;
                                 beginColumn = column;
                                 state = State::InPreComment;
+                                break;
+                            case T('='):
+                                begin = reading;
+                                beginColumn = column;
+                                state = State::InPreEq;
                                 break;
                             case T(','):
                                 AddToken(1, CodeTokenType::Comma);
@@ -142,7 +149,6 @@ namespace tinyfjing {
                         }
                         break;
                     case State::InInteger:
-
                         if (std::isdigit(c)) {
                             // 不做处理
                         } else if (c == T('.') && std::isdigit(reading[1])) {
@@ -171,6 +177,17 @@ namespace tinyfjing {
                             state = State::InComment;
                         } else {
                             AddToken(reading - begin, CodeTokenType::Sub);
+                            state = State::Begin;
+                            beginColumn = 0;
+                            reading--;
+                            begin = nullptr;
+                        }
+                        break;
+                    case State::InPreEq:
+                        if (c == T('=')) {
+                            state = State::InEq;
+                        } else {
+                            AddToken(reading - begin, CodeTokenType::Assign);
                             state = State::Begin;
                             beginColumn = 0;
                             reading--;

@@ -9,6 +9,19 @@ namespace tinyfjing {
 
     namespace compiler {
 
+        enum class BinaryOperator {
+            ADD,
+            SUB,
+            DIV,
+            Mul,
+            AND,
+            OR,
+        };
+
+        enum class UnaryOperator {
+            
+        };
+
         class Module {
         public:
             typedef std::shared_ptr<Module> Ptr;
