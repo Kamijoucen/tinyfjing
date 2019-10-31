@@ -4,6 +4,9 @@ namespace tinyfjing {
 
     namespace compiler {
 
+        CodeToken::CodeToken(CodeTokenType tokenType, long row, long column, string_t str)
+                : tokenType(tokenType), row(row), column(column), str(std::move(str)), data({}) {}
+
         CodeFile::Ptr CodeFile::Parse(const string_t &code) {
             auto file = std::make_shared<CodeFile>();
 

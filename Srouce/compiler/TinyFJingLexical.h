@@ -83,9 +83,6 @@ namespace tinyfjing {
             CodeToken(CodeTokenType tokenType, long row, long column, string_t str);
         };
 
-        inline CodeToken::CodeToken(CodeTokenType tokenType, long row, long column, string_t str)
-                : tokenType(tokenType), row(row), column(column), str(std::move(str)), data({}) {}
-
 
         struct CodeFile {
             typedef std::shared_ptr<CodeFile> Ptr;

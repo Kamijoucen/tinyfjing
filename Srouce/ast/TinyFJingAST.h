@@ -8,6 +8,21 @@ namespace tinyfjing {
 
     namespace ast {
 
+        enum class BinaryOperator {
+            ADD,
+            SUB,
+            DIV,
+            Mul,
+            AND,
+            OR
+        };
+
+        enum class UnaryOperator {
+            ADD,
+            SUB,
+            NOT
+        };
+
         using ValuePtr = value::BaseValue::Ptr;
 
         class BaseAst : public std::enable_shared_from_this<BaseAst> {

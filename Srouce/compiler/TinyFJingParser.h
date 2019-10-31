@@ -9,19 +9,6 @@ namespace tinyfjing {
 
     namespace compiler {
 
-        enum class BinaryOperator {
-            ADD,
-            SUB,
-            DIV,
-            Mul,
-            AND,
-            OR,
-        };
-
-        enum class UnaryOperator {
-            
-        };
-
         class Module {
         public:
             typedef std::shared_ptr<Module> Ptr;
@@ -67,6 +54,9 @@ namespace tinyfjing {
                 static ast::BaseAst::Ptr
                 ParseParenExpression(Parser::Iterator &reading, Parser::Iterator &end);
 
+                static ast::BaseAst::Ptr
+                ParseIdentifierExpression(Parser::Iterator &reading, Parser::Iterator &end);
+
                 // 单目运算表达式
                 static ast::BaseAst::Ptr
                 ParseUnaryExpression(Parser::Iterator &reading, Parser::Iterator &end);
@@ -74,12 +64,8 @@ namespace tinyfjing {
                 static ast::BaseAst::Ptr
                 ParseBinaryOpRHS(Parser::Iterator &reading, Parser::Iterator &end, int precedence);
             };
-
-
-
         };
     }
-
 }
 
 #endif //TINYFJING_TINYFJINGPARSER_H

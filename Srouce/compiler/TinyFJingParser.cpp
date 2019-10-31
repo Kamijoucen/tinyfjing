@@ -104,18 +104,16 @@ namespace tinyfjing {
                 case CodeTokenType::Double:
                     return ParseNumberExpression(reading, end);
                 case CodeTokenType::Identifier:
-                    break;
+                    return ParseIdentifierExpression(reading, end);
                 case CodeTokenType::False:
                 case CodeTokenType::True:
                     return ParseBooleanExpression(reading, end);
                 case CodeTokenType::LeftParen:
                     return ParseParenExpression(reading, end);
                 case CodeTokenType::Add:
-                    break;
                 case CodeTokenType::Sub:
-                    break;
                 case CodeTokenType::Not:
-                    break;
+                    return ParseUnaryExpression(reading, end);
                 default:
                     break;
             }
@@ -134,7 +132,7 @@ namespace tinyfjing {
             if (lhs == nullptr) {
                 return nullptr;
             }
-
+            // todo
             return nullptr;
         }
 
@@ -145,42 +143,44 @@ namespace tinyfjing {
             if (reading == end) {
                 throw std::runtime_error(GetFormatMsg(T("TOKEN_ENDED")));
             }
-            BaseValue::Ptr node = nullptr;
+            BaseValue::Ptr value = nullptr;
             switch (reading->tokenType) {
                 case CodeTokenType::Integer:
-                    node = std::make_shared<IntegerValue>(reading->data.int_value);
+                    value = std::make_shared<IntegerValue>(reading->data.int_value);
                     break;
                 case CodeTokenType::Float:
-                    node = std::make_shared<FloatValue>(reading->data.float_value);
+                    value = std::make_shared<FloatValue>(reading->data.float_value);
                     break;
                 case CodeTokenType::Double:
-                    node = std::make_shared<DoubleValue>(reading->data.double_value);
+                    value = std::make_shared<DoubleValue>(reading->data.double_value);
                     break;
                 default:
                     throw std::runtime_error(GetFormatMsg(T("TOKEN_ERROR")));
             }
             reading++;
-            return std::make_shared<NumberExpressionAst>(std::move(node));
+            return std::make_shared<NumberExpressionAst>(std::move(value));
         }
 
         ast::BaseAst::Ptr
         Parser::Expression::ParseBooleanExpression(Parser::Iterator &reading, Parser::Iterator &end) {
+            using namespace value;
+            using namespace ast;
             if (reading == end) {
                 throw std::runtime_error(GetFormatMsg(T("TOKEN_ENDED")));
             }
-            bool value = false;
+            std::shared_ptr<BooleanValue> value = nullptr;
             switch (reading->tokenType) {
                 case CodeTokenType::True:
-                    value = true;
+                    value = std::make_shared<BooleanValue>(true);
                     break;
                 case CodeTokenType::False:
-                    value = false;
+                    value = std::make_shared<BooleanValue>(false);
                     break;
                 default:
                     throw std::runtime_error(GetFormatMsg(T("TOKEN_ENDED")));
             }
             reading++;
-            return std::make_shared<ast::BooleanExpressionAst>(std::make_shared<value::BooleanValue>(value));
+            return std::make_shared<BooleanExpressionAst>(std::move(value));
         }
 
 
@@ -226,6 +226,12 @@ namespace tinyfjing {
             reading++; // eat )
             return exp;
         }
+
+        ast::BaseAst::Ptr
+        Parser::Expression::ParseIdentifierExpression(Parser::Iterator &reading, Parser::Iterator &end) {
+            return nullptr;
+        }
+
 
     }
 
