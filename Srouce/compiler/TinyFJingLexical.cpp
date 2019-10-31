@@ -194,6 +194,14 @@ namespace tinyfjing {
                             begin = nullptr;
                         }
                         break;
+                    case State::InEq: {
+                        AddToken(reading - begin, CodeTokenType::EQ);
+                        state = State::Begin;
+                        beginColumn = 0;
+                        reading--;
+                        begin = nullptr;
+                        break;
+                    }
                     case State::InComment:
                         if (c == T('\n')) {
                             AddToken(reading - begin, CodeTokenType::Comment);
@@ -202,9 +210,6 @@ namespace tinyfjing {
                             reading--;
                             begin = nullptr;
                         }
-                        break;
-                    case State::InEq:
-
                         break;
                     case State::InString:
                         if (c == T('"')) {
@@ -246,11 +251,20 @@ namespace tinyfjing {
                 case State::InFloat:
                     AddToken(reading - begin, CodeTokenType::Float);
                     break;
+                case State::InEq:
+                    AddToken(reading - begin, CodeTokenType::EQ);
+                    break;
+                case State::InPreComment:
+                    AddToken(reading - begin, CodeTokenType::Sub);
+                    break;
+                case State::InPreEq:
+                    AddToken(reading - begin, CodeTokenType::Assign);
+                    break;
+                case State::InComment:
+                    // 不做处理
+                    break;
                 case State::InString:
                     std::cout << "token error" << std::endl;
-                case State::InPreEq:
-
-                    break;
             }
 
             return file;

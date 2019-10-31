@@ -53,9 +53,21 @@ TEST(Lexical, number)
 
 TEST(Lexical, op)
 {
-    auto code = T("==");
+    auto code = T("= ==");
     CodeFile::Ptr ptr = CodeFile::Parse(code);
-    ASSERT_EQ(ptr->tokens.size(), 9);
+    ASSERT_EQ(ptr->tokens.size(), 2);
+    ASSERT_EQ(ptr->tokens[0].tokenType, CodeTokenType::Assign);
+    ASSERT_EQ(ptr->tokens[1].tokenType, CodeTokenType::EQ);
+
+    auto code2 = T("=");
+    CodeFile::Ptr ptr2 = CodeFile::Parse(code2);
+    ASSERT_EQ(ptr2->tokens.size(), 1);
+    ASSERT_EQ(ptr2->tokens[0].tokenType, CodeTokenType::Assign);
+
+    auto code3 = T("==");
+    CodeFile::Ptr ptr3 = CodeFile::Parse(code3);
+    ASSERT_EQ(ptr3->tokens.size(), 1);
+    ASSERT_EQ(ptr3->tokens[0].tokenType, CodeTokenType::EQ);
 }
 
 TEST(Lexical, string)
