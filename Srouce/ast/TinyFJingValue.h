@@ -10,6 +10,7 @@ namespace tinyfjing {
         enum class ValueType {
             Integer,
             Float,
+            Double,
             String,
             UnKnow
         };
@@ -39,6 +40,15 @@ namespace tinyfjing {
             float value;
 
             explicit FloatValue(float value);
+        };
+
+        class DoubleValue : public BaseValue {
+        public:
+            ValueType GetType() override;
+
+            double value;
+
+            explicit DoubleValue(double value);
         };
 
 

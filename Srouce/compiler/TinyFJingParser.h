@@ -61,6 +61,7 @@ namespace tinyfjing {
                 static ast::BaseAst::Ptr
                 ParseNumberExpression(Parser::Iterator &reading, Parser::Iterator &end);
 
+                // 单目运算表达式
                 static ast::BaseAst::Ptr
                 ParseUnaryExpression(Parser::Iterator &reading, Parser::Iterator &end);
             };

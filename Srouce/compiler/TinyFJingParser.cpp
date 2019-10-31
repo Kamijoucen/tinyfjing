@@ -146,10 +146,10 @@ namespace tinyfjing {
                     node = std::make_shared<IntegerValue>(reading->data.int_value);
                     break;
                 case CodeTokenType::Float:
-                    node = std::make_shared<IntegerValue>(reading->data.float_value);
+                    node = std::make_shared<FloatValue>(reading->data.float_value);
                     break;
                 case CodeTokenType::Double:
-                    node = std::make_shared<IntegerValue>(reading->data.double_value);
+                    node = std::make_shared<DoubleValue>(reading->data.double_value);
                     break;
                 default:
                     throw std::runtime_error(GetFormatMsg(T("TOKEN_ERROR")));
