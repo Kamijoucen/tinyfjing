@@ -51,6 +51,13 @@ TEST(Lexical, number)
     ASSERT_EQ(ptr->tokens[2].data.int_value, 3);
 }
 
+TEST(Lexical, op)
+{
+    auto code = T("==");
+    CodeFile::Ptr ptr = CodeFile::Parse(code);
+    ASSERT_EQ(ptr->tokens.size(), 9);
+}
+
 TEST(Lexical, string)
 {
     auto code = T("a1 \"fjing\" sfc\n55\"lisicen\"");

@@ -203,6 +203,9 @@ namespace tinyfjing {
                             begin = nullptr;
                         }
                         break;
+                    case State::InEq:
+
+                        break;
                     case State::InString:
                         if (c == T('"')) {
                             begin++; // 这里 +1 忽略掉字符串的第一个 "
@@ -245,6 +248,8 @@ namespace tinyfjing {
                     break;
                 case State::InString:
                     std::cout << "token error" << std::endl;
+                case State::InPreEq:
+
                     break;
             }
 
