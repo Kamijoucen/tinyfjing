@@ -10,7 +10,8 @@ namespace tinyfjing {
             {T("NEED_IDENTIFIER"),        T("需要一个标识符")},
             {T("NEED_KEYWORD"),           T("需要一个关键字:${name}")},
             {T("TOKEN_ENDED"),            T("文件意外结束")},
-            {T("TOKEN_ERROR"),            T("token类型错误")}
+            {T("TOKEN_ERROR"),            T("token类型错误")},
+            {T("EXPRESSION_NOT_FOUND"),   T("表达式未找到")}
     };
 
     inline static string_t GetFormatMsg(const string_t &key, const std::map<string_t, string_t> &param) {

@@ -22,6 +22,11 @@ namespace tinyfjing {
 
         DoubleValue::DoubleValue(double value) : value(value) {}
 
+        ValueType BooleanValue::GetType() {
+            return ValueType::Boolean;
+        }
+
+        BooleanValue::BooleanValue(bool value) : value(value) {}
     }
 
 }

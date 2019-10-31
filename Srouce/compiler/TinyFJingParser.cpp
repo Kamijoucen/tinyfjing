@@ -100,21 +100,16 @@ namespace tinyfjing {
             }
             switch (reading->tokenType) {
                 case CodeTokenType::Integer:
-                    break;
                 case CodeTokenType::Float:
-                    break;
                 case CodeTokenType::Double:
-                    break;
+                    return ParseNumberExpression(reading, end);
                 case CodeTokenType::Identifier:
                     break;
                 case CodeTokenType::False:
-                    break;
                 case CodeTokenType::True:
-                    break;
+                    return ParseBooleanExpression(reading, end);
                 case CodeTokenType::LeftParen:
-                    break;
-                case CodeTokenType::RightParen:
-                    break;
+                    return ParseParenExpression(reading, end);
                 case CodeTokenType::Add:
                     break;
                 case CodeTokenType::Sub:
@@ -130,6 +125,16 @@ namespace tinyfjing {
 
         ast::BaseAst::Ptr
         Parser::Expression::ParseExpression(Parser::Iterator &reading, Parser::Iterator &end) {
+            if (reading == end) {
+                throw std::runtime_error(GetFormatMsg(T("TOKEN_ENDED")));
+            }
+            // 将二元表达式 1+2*3 拆分成 1, +2, *3 来解析
+            // ParsePrimaryExpression将解析第一个表达式 1
+            auto lhs = ParsePrimaryExpression(reading, end);
+            if (lhs == nullptr) {
+                return nullptr;
+            }
+
             return nullptr;
         }
 
@@ -159,6 +164,27 @@ namespace tinyfjing {
         }
 
         ast::BaseAst::Ptr
+        Parser::Expression::ParseBooleanExpression(Parser::Iterator &reading, Parser::Iterator &end) {
+            if (reading == end) {
+                throw std::runtime_error(GetFormatMsg(T("TOKEN_ENDED")));
+            }
+            bool value = false;
+            switch (reading->tokenType) {
+                case CodeTokenType::True:
+                    value = true;
+                    break;
+                case CodeTokenType::False:
+                    value = false;
+                    break;
+                default:
+                    throw std::runtime_error(GetFormatMsg(T("TOKEN_ENDED")));
+            }
+            reading++;
+            return std::make_shared<ast::BooleanExpressionAst>(std::make_shared<value::BooleanValue>(value));
+        }
+
+
+        ast::BaseAst::Ptr
         Parser::Expression::ParseUnaryExpression(Parser::Iterator &reading, Parser::Iterator &end) {
             if (reading == end) {
                 throw std::runtime_error(GetFormatMsg(T("TOKEN_ENDED")));
@@ -171,6 +197,36 @@ namespace tinyfjing {
             // todo
             return nullptr;
         }
+
+        ast::BaseAst::Ptr
+        Parser::Expression::ParseBinaryOpRHS(Parser::Iterator &reading, Parser::Iterator &end, int precedence) {
+            return nullptr;
+        }
+
+        ast::BaseAst::Ptr
+        Parser::Expression::ParseParenExpression(Parser::Iterator &reading, Parser::Iterator &end) {
+            if (reading == end) {
+                throw std::runtime_error(GetFormatMsg(T("TOKEN_ENDED")));
+            }
+            if (reading->tokenType != CodeTokenType::LeftParen) {
+                throw std::runtime_error(GetFormatMsg(T("TOKEN_ERROR")));
+            }
+            reading++; // eat (
+            auto exp = ParseExpression(reading, end);
+            if (exp == nullptr) {
+                throw std::runtime_error(GetFormatMsg(T("EXPRESSION_NOT_FOUND")));
+            }
+            if (reading == end) {
+                throw std::runtime_error(GetFormatMsg(T("TOKEN_ENDED")));
+            }
+            if (reading->tokenType != CodeTokenType::RightParen) {
+                // todo 添加完整的错误描述
+                throw std::runtime_error(GetFormatMsg(T("TOKEN_ERROR")));
+            }
+            reading++; // eat )
+            return exp;
+        }
+
     }
 
 }

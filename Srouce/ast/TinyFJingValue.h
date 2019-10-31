@@ -12,6 +12,7 @@ namespace tinyfjing {
             Float,
             Double,
             String,
+            Boolean,
             UnKnow
         };
 
@@ -49,6 +50,15 @@ namespace tinyfjing {
             double value;
 
             explicit DoubleValue(double value);
+        };
+
+        class BooleanValue : public BaseValue {
+        public:
+            ValueType GetType() override;
+
+            bool value;
+
+            explicit BooleanValue(bool value);
         };
 
 

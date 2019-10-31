@@ -28,6 +28,12 @@ namespace tinyfjing {
             return nullptr;
         }
         NumberExpressionAst::NumberExpressionAst(ValuePtr value) : value(std::move(value)) {}
+
+        ValuePtr BooleanExpressionAst::eval() {
+            return nullptr;
+        }
+
+        BooleanExpressionAst::BooleanExpressionAst(ValuePtr value) : value(std::move(value)) {}
     }
 
 }

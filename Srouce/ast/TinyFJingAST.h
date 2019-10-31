@@ -32,6 +32,18 @@ namespace tinyfjing {
             ValuePtr eval() override;
         };
 
+        class BooleanExpressionAst : public BaseAst {
+        public:
+            typedef std::shared_ptr<BooleanExpressionAst> Ptr;
+            typedef std::weak_ptr<NumberExpressionAst> WeakPtr;
+
+            ValuePtr value = nullptr;
+
+            explicit BooleanExpressionAst(ValuePtr value);
+
+            ValuePtr eval() override;
+        };
+
         class BinaryExpressionAst : public BaseAst {
         public:
             typedef std::shared_ptr<BinaryExpressionAst> Ptr;
