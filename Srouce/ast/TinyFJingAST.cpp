@@ -20,15 +20,16 @@ namespace tinyfjing {
 
         ValuePtr
         BinaryExpressionAst::eval() {
+
             return nullptr;
         }
 
         BinaryExpressionAst::BinaryExpressionAst(BinaryOperator op, BaseAst::Ptr left, BaseAst::Ptr right)
-                : op(op), left(left), right(right) {}
+                : op(op), left(std::move(left)), right(std::move(right)) {}
 
         ValuePtr
         NumberExpressionAst::eval() {
-            return nullptr;
+            return value;
         }
         NumberExpressionAst::NumberExpressionAst(ValuePtr value) : value(std::move(value)) {}
 

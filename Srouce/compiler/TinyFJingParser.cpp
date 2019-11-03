@@ -301,9 +301,6 @@ namespace tinyfjing {
 
                 CodeTokenType nextOp = reading->tokenType;
                 int nextOpPrecedence = GetOperatorPrecedence(nextOp);
-                if (nextOpPrecedence == -1) {
-                    return rhs;
-                }
                 if (nextOpPrecedence > curOpPrecedence) {
                     rhs = ParseBinaryOpRHS(reading, end, std::move(rhs), curOpPrecedence + 1);
                     if (rhs == nullptr) {

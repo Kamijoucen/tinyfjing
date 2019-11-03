@@ -1,10 +1,10 @@
 #ifndef TINYFJING_LEXICALTEST_H
 #define TINYFJING_LEXICALTEST_H
 
-#include <compiler/TinyFJingLexical.h>
 #include "UnitTest.h"
 #include "TinyFJingSTL.h"
 #include "compiler/TinyFJingLexical.h"
+#include "compiler/TinyFJingParser.h"
 #include "gtest/gtest.h"
 
 using namespace std;
@@ -93,6 +93,19 @@ TEST(Lexical, string)
     ASSERT_EQ(ptr->tokens[4].str, "lisicen");
     ASSERT_EQ(ptr->tokens[4].tokenType, CodeTokenType::String);
 
+}
+
+TEST(parser, numcomput)
+{
+    auto code = T("1+2* 3");
+    CodeFile::Ptr ptr = CodeFile::Parse(code);
+    ASSERT_EQ(ptr->tokens.size(), 5);
+
+    auto begin = ptr->tokens.begin();
+    auto end = ptr->tokens.end();
+
+    auto exp = Parser::Expression::ParseExpression(begin, end);
+    ASSERT_EQ(ptr->tokens.size(), 5);
 }
 
 #endif //TINYFJING_LEXICALTEST_H
