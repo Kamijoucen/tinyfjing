@@ -66,9 +66,22 @@ namespace tinyfjing {
 
             ValuePtr eval() override;
 
+            BinaryOperator op;
             BaseAst::Ptr left;
             BaseAst::Ptr right;
-            // todo op
+        };
+
+        class UnaryExpressionAst : public BaseAst {
+        public:
+            typedef std::shared_ptr<UnaryExpressionAst> Ptr;
+            typedef std::weak_ptr<BinaryExpressionAst> WeakPtr;
+
+            ValuePtr eval() override;
+
+            UnaryExpressionAst(UnaryOperator op, BaseAst::Ptr ptr);
+
+            UnaryOperator op;
+            BaseAst::Ptr ptr;
         };
 
         class UsingStatementAst : public BaseAst {

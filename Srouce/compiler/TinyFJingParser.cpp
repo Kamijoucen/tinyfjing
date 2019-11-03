@@ -40,6 +40,8 @@ namespace tinyfjing {
                     }
                     case CodeTokenType::Identifier: {
                         // 语句第一行出现Identifier通常是变量赋值，函数调用
+                        auto identNode = Parser::Expression::ParseIdentifierExpression(reading, end);
+                        ptr->codes.push_back(std::move(identNode));
                         break;
                     }
                     case CodeTokenType::If: {
@@ -115,6 +117,7 @@ namespace tinyfjing {
                 case CodeTokenType::Not:
                     return ParseUnaryExpression(reading, end);
                 default:
+                    // todo 这里可以抛出异常
                     break;
             }
             return nullptr;
@@ -186,16 +189,54 @@ namespace tinyfjing {
 
         ast::BaseAst::Ptr
         Parser::Expression::ParseUnaryExpression(Parser::Iterator &reading, Parser::Iterator &end) {
+            using namespace ast;
             if (reading == end) {
                 throw std::runtime_error(GetFormatMsg(T("TOKEN_ENDED")));
             }
-            CodeTokenType tokenType = reading->tokenType;
-            if (tokenType != CodeTokenType::Not && tokenType != CodeTokenType::Add
-                && tokenType != CodeTokenType::Sub) {
-                throw std::runtime_error(GetFormatMsg(T("TOKEN_ERROR")));
+            CodeTokenType opTokenType = reading->tokenType;
+            UnaryOperator op;
+            switch (opTokenType) {
+                case CodeTokenType::Not:
+                    op = UnaryOperator::NOT;
+                    break;
+                case CodeTokenType::Add:
+                    op = UnaryOperator::ADD;
+                    break;
+                case CodeTokenType::Sub:
+                    op = UnaryOperator::SUB;
+                    break;
+                default:
+                    throw std::runtime_error(GetFormatMsg(T("TOKEN_ERROR")));
+
             }
-            // todo
-            return nullptr;
+            reading++;
+            if (reading == end) {
+                throw std::runtime_error(GetFormatMsg(T("TOKEN_ENDED")));
+            }
+            // 单目运算符可以支持的运算: f ident, f (exp), f value
+            // 单目运算符的优先级最高，所以不必考虑单目运算符作用于二元表达式的情况
+            BaseAst::Ptr unaryExpNode = nullptr;
+            // todo 这里可以做一下类型检查，例如 not 运算符不能作用于数字
+            switch (reading->tokenType) {
+                case CodeTokenType::Integer:
+                case CodeTokenType::Float:
+                case CodeTokenType::Double:
+                    unaryExpNode = ParseNumberExpression(reading, end);
+                    break;
+                case CodeTokenType::Identifier:
+                    unaryExpNode = ParseIdentifierExpression(reading, end);
+                    break;
+                case CodeTokenType::False:
+                case CodeTokenType::True:
+                    unaryExpNode = ParseBooleanExpression(reading, end);
+                    break;
+                case CodeTokenType::LeftParen:
+                    unaryExpNode = ParseParenExpression(reading, end);
+                    break;
+                default:
+                    throw std::runtime_error(GetFormatMsg("TOKEN_ERROR"));
+            }
+            return std::make_shared<UnaryExpressionAst>(op, std::move(unaryExpNode));
         }
 
         ast::BaseAst::Ptr

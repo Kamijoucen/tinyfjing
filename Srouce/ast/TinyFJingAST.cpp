@@ -34,6 +34,12 @@ namespace tinyfjing {
         }
 
         BooleanExpressionAst::BooleanExpressionAst(ValuePtr value) : value(std::move(value)) {}
+
+        ValuePtr UnaryExpressionAst::eval() {
+            return nullptr;
+        }
+
+        UnaryExpressionAst::UnaryExpressionAst(UnaryOperator op, BaseAst::Ptr ptr) : op(op), ptr(std::move(ptr)) {}
     }
 
 }
