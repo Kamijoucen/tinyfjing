@@ -9,6 +9,24 @@ namespace tinyfjing {
 
     namespace compiler {
 
+        // 优先级表
+        const static std::map<CodeTokenType, int> PRECEDENCE_TABLE = {
+                {CodeTokenType::Add, 10},
+                {CodeTokenType::Sub, 10},
+                {CodeTokenType::Mul, 20},
+                {CodeTokenType::Div, 20},
+                {CodeTokenType::Mod, 20},
+                {CodeTokenType::And, 30},
+                {CodeTokenType::Or,  30},
+                {CodeTokenType::EQ,  5},
+                {CodeTokenType::LT,  5},
+                {CodeTokenType::GT,  5},
+                {CodeTokenType::LE,  5},
+                {CodeTokenType::GE,  5},
+                {CodeTokenType::NE,  5},
+
+        };
+
         class Module {
         public:
             typedef std::shared_ptr<Module> Ptr;
@@ -62,7 +80,7 @@ namespace tinyfjing {
                 ParseUnaryExpression(Parser::Iterator &reading, Parser::Iterator &end);
 
                 static ast::BaseAst::Ptr
-                ParseBinaryOpRHS(Parser::Iterator &reading, Parser::Iterator &end, int precedence);
+                ParseBinaryOpRHS(Parser::Iterator &reading, Parser::Iterator &end, ast::BaseAst::Ptr lhs, int precedence);
             };
         };
     }

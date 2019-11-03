@@ -135,8 +135,8 @@ namespace tinyfjing {
             if (lhs == nullptr) {
                 return nullptr;
             }
-            // todo
-            return nullptr;
+            // 这里的 precedence 参数表示当前方法能处理的最低优先级，低于此优先级将直接返回
+            return ParseBinaryOpRHS(reading, end, std::move(lhs), -1);
         }
 
         ast::BaseAst::Ptr
@@ -240,7 +240,11 @@ namespace tinyfjing {
         }
 
         ast::BaseAst::Ptr
-        Parser::Expression::ParseBinaryOpRHS(Parser::Iterator &reading, Parser::Iterator &end, int precedence) {
+        Parser::Expression::ParseBinaryOpRHS(Parser::Iterator &reading, Parser::Iterator &end,
+                ast::BaseAst::Ptr lhs, int precedence) {
+            while (reading != end) {
+
+            }
             return nullptr;
         }
 

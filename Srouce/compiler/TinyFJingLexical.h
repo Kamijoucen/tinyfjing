@@ -52,7 +52,7 @@ namespace tinyfjing {
             GE,             // >=
             Assign,         // ==
             EQ,             // =
-            NE,             // <>
+            NE,             // <> or !=
             And,            // and
             Or,             // or
             Not,            // not
