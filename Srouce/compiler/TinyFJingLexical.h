@@ -50,8 +50,8 @@ namespace tinyfjing {
             GT,             // >
             LE,             // <=
             GE,             // >=
-            Assign,         // ==
-            EQ,             // =
+            Assign,         // =
+            EQ,             // ==
             NE,             // <> or !=
             And,            // and
             Or,             // or

@@ -10,7 +10,7 @@ namespace tinyfjing {
     namespace compiler {
 
         // 优先级表
-        const static std::map<CodeTokenType, int> PRECEDENCE_TABLE = {
+        inline const static std::map<CodeTokenType, int> PRECEDENCE_TABLE = {
                 {CodeTokenType::Add, 10},
                 {CodeTokenType::Sub, 10},
                 {CodeTokenType::Mul, 20},

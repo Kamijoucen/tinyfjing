@@ -9,18 +9,27 @@ namespace tinyfjing {
     namespace ast {
 
         enum class BinaryOperator {
-            ADD,
-            SUB,
-            DIV,
+            Add,
+            Sub,
+            Div,
             Mul,
-            AND,
-            OR
+            Mod,
+            And,
+            Or,
+            LT,
+            GT,
+            LE,
+            GE,
+            EQ,
+            NE,
+            ERROR
         };
 
         enum class UnaryOperator {
-            ADD,
-            SUB,
-            NOT
+            Add,
+            Sub,
+            Not,
+            ERROR
         };
 
         using ValuePtr = value::BaseValue::Ptr;
@@ -65,6 +74,8 @@ namespace tinyfjing {
             typedef std::weak_ptr<BinaryExpressionAst> WeakPtr;
 
             ValuePtr eval() override;
+
+            BinaryExpressionAst(BinaryOperator op, BaseAst::Ptr left, BaseAst::Ptr right);
 
             BinaryOperator op;
             BaseAst::Ptr left;

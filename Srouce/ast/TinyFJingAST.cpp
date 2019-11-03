@@ -23,6 +23,9 @@ namespace tinyfjing {
             return nullptr;
         }
 
+        BinaryExpressionAst::BinaryExpressionAst(BinaryOperator op, BaseAst::Ptr left, BaseAst::Ptr right)
+                : op(op), left(left), right(right) {}
+
         ValuePtr
         NumberExpressionAst::eval() {
             return nullptr;

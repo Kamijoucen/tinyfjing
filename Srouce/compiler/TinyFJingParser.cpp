@@ -197,17 +197,16 @@ namespace tinyfjing {
             UnaryOperator op;
             switch (opTokenType) {
                 case CodeTokenType::Not:
-                    op = UnaryOperator::NOT;
+                    op = UnaryOperator::Not;
                     break;
                 case CodeTokenType::Add:
-                    op = UnaryOperator::ADD;
+                    op = UnaryOperator::Add;
                     break;
                 case CodeTokenType::Sub:
-                    op = UnaryOperator::SUB;
+                    op = UnaryOperator::Sub;
                     break;
                 default:
                     throw std::runtime_error(GetFormatMsg(T("TOKEN_ERROR")));
-
             }
             reading++;
             if (reading == end) {
@@ -239,11 +238,83 @@ namespace tinyfjing {
             return std::make_shared<UnaryExpressionAst>(op, std::move(unaryExpNode));
         }
 
+        inline int GetOperatorPrecedence(CodeTokenType op) {
+            auto iter = PRECEDENCE_TABLE.find(op);
+            if (iter == PRECEDENCE_TABLE.end()) {
+                return -1;
+            }
+            return iter->second;
+        }
+
+        inline ast::BinaryOperator GetBinaryOpByCodeTokenType(const CodeTokenType &type) {
+            using namespace ast;
+            switch (type) {
+                case CodeTokenType::Add:
+                    return BinaryOperator::Add;
+                case CodeTokenType::Sub:
+                    return BinaryOperator::Sub;
+                case CodeTokenType::Mul:
+                    return BinaryOperator::Mul;
+                case CodeTokenType::Div:
+                case CodeTokenType::IntDiv:
+                    return BinaryOperator::Div;
+                case CodeTokenType::Mod:
+                    return BinaryOperator::Mod;
+                case CodeTokenType::LT:
+                    return BinaryOperator::LT;
+                case CodeTokenType::GT:
+                    return BinaryOperator::GT;
+                case CodeTokenType::LE:
+                    return BinaryOperator::LE;
+                case CodeTokenType::GE:
+                    return BinaryOperator::GE;
+                case CodeTokenType::EQ:
+                    return BinaryOperator::EQ;
+                case CodeTokenType::NE:
+                    return BinaryOperator::NE;
+                case CodeTokenType::And:
+                    return BinaryOperator::And;
+                case CodeTokenType::Or:
+                    return BinaryOperator::Or;
+                default:
+                    return BinaryOperator::ERROR;
+            }
+        }
+
         ast::BaseAst::Ptr
         Parser::Expression::ParseBinaryOpRHS(Parser::Iterator &reading, Parser::Iterator &end,
-                ast::BaseAst::Ptr lhs, int precedence) {
+                                             ast::BaseAst::Ptr lhs, int precedence) {
+            using namespace ast;
             while (reading != end) {
+                // 当前的运算符
+                CodeTokenType curOp = reading->tokenType;
+                int curOpPrecedence = GetOperatorPrecedence(curOp);
+                if (curOpPrecedence == -1) {
+                    // 非双目运算符
+                    throw std::runtime_error(GetFormatMsg(T("TOKEN_ERROR")));
+                }
+                if (precedence > curOpPrecedence) {
+                    return lhs;
+                }
+                reading++; // eat op
+                BaseAst::Ptr rhs = ParsePrimaryExpression(reading, end);
 
+                CodeTokenType nextOp = reading->tokenType;
+                int nextOpPrecedence = GetOperatorPrecedence(nextOp);
+                if (nextOpPrecedence == -1) {
+                    return rhs;
+                }
+                if (nextOpPrecedence > curOpPrecedence) {
+                    rhs = ParseBinaryOpRHS(reading, end, std::move(rhs), curOpPrecedence + 1);
+                    if (rhs == nullptr) {
+                        return nullptr;
+                    }
+                }
+                BinaryOperator curBinOp = GetBinaryOpByCodeTokenType(curOp);
+                if (curBinOp == BinaryOperator::ERROR) {
+                    throw std::runtime_error(GetFormatMsg(T("TOKEN_ERROR")));
+                }
+                lhs = std::make_shared<BinaryExpressionAst>(curBinOp, std::move(lhs), std::move(rhs));
             }
             return nullptr;
         }
