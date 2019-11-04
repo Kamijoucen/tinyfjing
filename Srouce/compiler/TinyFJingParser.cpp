@@ -136,7 +136,7 @@ namespace tinyfjing {
                 return nullptr;
             }
             // 这里的 precedence 参数表示当前方法能处理的最低优先级，低于此优先级将直接返回
-            return ParseBinaryOpRHS(reading, end, std::move(lhs), -1);
+            return ParseBinaryOpRHS(reading, end, std::move(lhs), 0);
         }
 
         ast::BaseAst::Ptr
@@ -285,14 +285,10 @@ namespace tinyfjing {
         Parser::Expression::ParseBinaryOpRHS(Parser::Iterator &reading, Parser::Iterator &end,
                                              ast::BaseAst::Ptr lhs, int precedence) {
             using namespace ast;
-            while (reading != end) {
+            while (true) {
                 // 当前的运算符
                 CodeTokenType curOp = reading->tokenType;
                 int curOpPrecedence = GetOperatorPrecedence(curOp);
-                if (curOpPrecedence == -1) {
-                    // 非双目运算符
-                    throw std::runtime_error(GetFormatMsg(T("TOKEN_ERROR")));
-                }
                 if (precedence > curOpPrecedence) {
                     return lhs;
                 }
@@ -313,7 +309,6 @@ namespace tinyfjing {
                 }
                 lhs = std::make_shared<BinaryExpressionAst>(curBinOp, std::move(lhs), std::move(rhs));
             }
-            return nullptr;
         }
 
         ast::BaseAst::Ptr
