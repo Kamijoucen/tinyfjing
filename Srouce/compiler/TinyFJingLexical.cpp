@@ -12,10 +12,9 @@ namespace tinyfjing {
 
             enum class State {
                 Begin,
-                InPreComment,
+                InComment,
                 InPreEq,
                 InEq,
-                InComment,
                 InInteger,
                 InFloat,
                 InString,
@@ -102,9 +101,18 @@ namespace tinyfjing {
                                 AddToken(1, CodeTokenType::Add);
                                 break;
                             case T('-'):
+                                AddToken(1, CodeTokenType::Sub);
+                                break;
+                            case T('*'):
+                                AddToken(1, CodeTokenType::Mul);
+                                break;
+                            case T('/'):
+                                AddToken(1, CodeTokenType::Div);
+                                break;
+                            case T(';'):
                                 begin = reading;
                                 beginColumn = column;
-                                state = State::InPreComment;
+                                state = State::InComment;
                                 break;
                             case T('='):
                                 begin = reading;
@@ -113,12 +121,6 @@ namespace tinyfjing {
                                 break;
                             case T(','):
                                 AddToken(1, CodeTokenType::Comma);
-                                break;
-                            case T('*'):
-                                AddToken(1, CodeTokenType::Mul);
-                                break;
-                            case T('/'):
-                                AddToken(1, CodeTokenType::Div);
                                 break;
                             case T('"'):
                                 begin = reading;
@@ -169,17 +171,6 @@ namespace tinyfjing {
                             // 不做处理
                         } else {
                             AddToken(reading - begin, CodeTokenType::Float);
-                            state = State::Begin;
-                            beginColumn = 0;
-                            reading--;
-                            begin = nullptr;
-                        }
-                        break;
-                    case State::InPreComment:
-                        if (c == T('-')) {
-                            state = State::InComment;
-                        } else {
-                            AddToken(reading - begin, CodeTokenType::Sub);
                             state = State::Begin;
                             beginColumn = 0;
                             reading--;
@@ -256,9 +247,6 @@ namespace tinyfjing {
                     break;
                 case State::InEq:
                     AddToken(reading - begin, CodeTokenType::EQ);
-                    break;
-                case State::InPreComment:
-                    AddToken(reading - begin, CodeTokenType::Sub);
                     break;
                 case State::InPreEq:
                     AddToken(reading - begin, CodeTokenType::Assign);

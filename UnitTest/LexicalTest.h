@@ -11,8 +11,7 @@ using namespace std;
 using namespace tinyfjing;
 using namespace tinyfjing::compiler;
 
-TEST(Lexical, identifier)
-{
+TEST(Lexical, identifier) {
     auto code = T("name true\n\tadd  var");
     CodeFile::Ptr ptr = CodeFile::Parse(code);
 
@@ -31,8 +30,7 @@ TEST(Lexical, identifier)
     ASSERT_EQ(ptr->tokens[3].tokenType, CodeTokenType::Var);
 }
 
-TEST(Lexical, number)
-{
+TEST(Lexical, number) {
     auto code = T("30\n12.4 3");
     CodeFile::Ptr ptr = CodeFile::Parse(code);
 
@@ -51,8 +49,7 @@ TEST(Lexical, number)
     ASSERT_EQ(ptr->tokens[2].data.int_value, 3);
 }
 
-TEST(Lexical, op)
-{
+TEST(Lexical, op) {
     auto code = T("= ==");
     CodeFile::Ptr ptr = CodeFile::Parse(code);
     ASSERT_EQ(ptr->tokens.size(), 2);
@@ -70,8 +67,7 @@ TEST(Lexical, op)
     ASSERT_EQ(ptr3->tokens[0].tokenType, CodeTokenType::EQ);
 }
 
-TEST(Lexical, string)
-{
+TEST(Lexical, string) {
     auto code = T("a1 \"fjing\" sfc\n55\"lisicen\"");
     CodeFile::Ptr ptr = CodeFile::Parse(code);
 
@@ -95,17 +91,16 @@ TEST(Lexical, string)
 
 }
 
-TEST(parser, numcomput)
-{
+TEST(parser, numcomput) {
     auto code = T("1+2* 3");
     CodeFile::Ptr ptr = CodeFile::Parse(code);
     ASSERT_EQ(ptr->tokens.size(), 5);
-
-    auto begin = ptr->tokens.begin();
-    auto end = ptr->tokens.end();
-
+    auto begin = ptr->tokens.begin(), end = ptr->tokens.end();
     auto exp = Parser::Expression::ParseExpression(begin, end);
-    ASSERT_EQ(ptr->tokens.size(), 5);
+
+    auto code2 = T("-1--2*- 3");
+    CodeFile::Ptr ptr2 = CodeFile::Parse(code2);
+    ASSERT_EQ(ptr2->tokens.size(), 8);
 }
 
 #endif //TINYFJING_LEXICALTEST_H
