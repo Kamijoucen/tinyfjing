@@ -101,6 +101,9 @@ TEST(parser, numcomput) {
     auto code2 = T("-1--2*- 3");
     CodeFile::Ptr ptr2 = CodeFile::Parse(code2);
     ASSERT_EQ(ptr2->tokens.size(), 8);
+    auto begin2 = ptr2->tokens.begin(), end2 = ptr2->tokens.end();
+    auto exp2 = Parser::Expression::ParseExpression(begin2, end2);
+    ASSERT_EQ(ptr2->tokens.size(), 8);
 }
 
 #endif //TINYFJING_LEXICALTEST_H
