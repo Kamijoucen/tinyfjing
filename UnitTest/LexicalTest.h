@@ -103,7 +103,12 @@ TEST(parser, numcomput) {
     ASSERT_EQ(ptr2->tokens.size(), 8);
     auto begin2 = ptr2->tokens.begin(), end2 = ptr2->tokens.end();
     auto exp2 = Parser::Expression::ParseExpression(begin2, end2);
-    ASSERT_EQ(ptr2->tokens.size(), 8);
+
+    auto code3 = T("true and false");
+    CodeFile::Ptr ptr3 = CodeFile::Parse(code3);
+    ASSERT_EQ(ptr3->tokens.size(), 3);
+    auto begin3 = ptr3->tokens.begin(), end3 = ptr3->tokens.end();
+    auto exp3 = Parser::Expression::ParseExpression(begin3, end3);
 }
 
 #endif //TINYFJING_LEXICALTEST_H

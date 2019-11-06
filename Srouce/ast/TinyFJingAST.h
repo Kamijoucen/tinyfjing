@@ -100,9 +100,34 @@ namespace tinyfjing {
             typedef std::shared_ptr<UsingStatementAst> Ptr;
             typedef std::weak_ptr<UsingStatementAst> WeakPtr;
 
+            ValuePtr eval() override;
+
             std::vector<string_t> usings;
+        };
+
+        class NameAst : public BaseAst {
+        public:
+            typedef std::shared_ptr<NameAst> Ptr;
+            typedef std::weak_ptr<NameAst> WeakPtr;
 
             ValuePtr eval() override;
+
+            explicit NameAst(string_t name);
+
+            string_t name;
+        };
+
+        class FunctionCallAst : public BaseAst {
+        public:
+            typedef std::shared_ptr<FunctionCallAst> Ptr;
+            typedef std::weak_ptr<FunctionCallAst> WeakPtr;
+
+            ValuePtr eval() override;
+
+            FunctionCallAst(string_t callName, std::vector<BaseAst::Ptr> args);
+
+            string_t callName;
+            std::vector<BaseAst::Ptr> args;
         };
 
         class IfStatementAst : public BaseAst {

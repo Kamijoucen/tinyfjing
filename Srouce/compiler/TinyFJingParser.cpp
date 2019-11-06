@@ -334,10 +334,46 @@ namespace tinyfjing {
             reading++; // eat )
             return exp;
         }
-
         ast::BaseAst::Ptr
         Parser::Expression::ParseIdentifierExpression(Parser::Iterator &reading, Parser::Iterator &end) {
-            return nullptr;
+            if (reading == end || reading->tokenType != CodeTokenType::Identifier) {
+                throw std::runtime_error(GetFormatMsg(T("TOKEN_ENDED")));
+            }
+            string_t name = reading->str;
+            reading++; // eat ident
+            if (reading == end) {
+                throw std::runtime_error(GetFormatMsg(T("TOKEN_ENDED")));
+            }
+            // 标识符存在 ident, ident=, ident( 。三种情况
+            if (reading->tokenType == CodeTokenType::LeftParen) {
+                reading++; // eat (
+                std::vector<ast::BaseAst::Ptr> args;
+                while (reading != end && reading->tokenType != CodeTokenType::RightParen) {
+                    auto arg = Parser::Expression::ParseExpression(reading, end);
+                    if (arg == nullptr) {
+                        throw std::runtime_error(GetFormatMsg(T("TOKEN_ENDED")));
+                    }
+                    args.push_back(std::move(arg));
+                }
+                if (reading->tokenType != CodeTokenType::RightParen) {
+                    throw std::runtime_error(GetFormatMsg(T("TOKEN_ERROR")));
+                }
+                reading++; // eat )
+                return std::make_shared<ast::FunctionCallAst>(std::move(name), std::move(args));
+            } else if (reading->tokenType == CodeTokenType::Assign) {
+                reading++; // eat =
+                if (reading == end) {
+                    throw std::runtime_error(GetFormatMsg(T("TOKEN_ENDED")));
+                }
+                auto exp = Parser::Expression::ParseExpression(reading, end);
+                if (exp == nullptr) {
+                    throw std::runtime_error(GetFormatMsg(T("TOKEN_ERROR")));
+                }
+                
+                return nullptr;
+            } else {
+                return std::make_shared<ast::NameAst>(std::move(name));
+            }
         }
 
 

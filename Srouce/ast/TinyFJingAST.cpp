@@ -31,6 +31,7 @@ namespace tinyfjing {
         NumberExpressionAst::eval() {
             return value;
         }
+
         NumberExpressionAst::NumberExpressionAst(ValuePtr value) : value(std::move(value)) {}
 
         ValuePtr BooleanExpressionAst::eval() {
@@ -44,6 +45,19 @@ namespace tinyfjing {
         }
 
         UnaryExpressionAst::UnaryExpressionAst(UnaryOperator op, BaseAst::Ptr ptr) : op(op), ptr(std::move(ptr)) {}
+
+        ValuePtr FunctionCallAst::eval() {
+            return nullptr;
+        }
+
+        FunctionCallAst::FunctionCallAst(string_t callName, std::vector<BaseAst::Ptr> args) :
+                callName(std::move(callName)), args(std::move(args)) {}
+
+        ValuePtr NameAst::eval() {
+            return nullptr;
+        }
+
+        NameAst::NameAst(string_t name) : name(std::move(name)) {}
     }
 
 }
