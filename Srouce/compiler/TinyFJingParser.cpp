@@ -239,6 +239,23 @@ namespace tinyfjing {
         }
 
         inline int GetOperatorPrecedence(CodeTokenType op) {
+            // 优先级表
+            static std::map<CodeTokenType, int> PRECEDENCE_TABLE = {
+                    {CodeTokenType::Add, 10},
+                    {CodeTokenType::Sub, 10},
+                    {CodeTokenType::Mul, 20},
+                    {CodeTokenType::Div, 20},
+                    {CodeTokenType::Mod, 20},
+                    {CodeTokenType::And, 30},
+                    {CodeTokenType::Or,  30},
+                    {CodeTokenType::EQ,  5},
+                    {CodeTokenType::LT,  5},
+                    {CodeTokenType::GT,  5},
+                    {CodeTokenType::LE,  5},
+                    {CodeTokenType::GE,  5},
+                    {CodeTokenType::NE,  5},
+
+            };
             auto iter = PRECEDENCE_TABLE.find(op);
             if (iter == PRECEDENCE_TABLE.end()) {
                 return -1;
@@ -334,6 +351,7 @@ namespace tinyfjing {
             reading++; // eat )
             return exp;
         }
+
         ast::BaseAst::Ptr
         Parser::Expression::ParseIdentifierExpression(Parser::Iterator &reading, Parser::Iterator &end) {
             if (reading == end || reading->tokenType != CodeTokenType::Identifier) {
@@ -369,7 +387,7 @@ namespace tinyfjing {
                 if (exp == nullptr) {
                     throw std::runtime_error(GetFormatMsg(T("TOKEN_ERROR")));
                 }
-                
+
                 return nullptr;
             } else {
                 return std::make_shared<ast::NameAst>(std::move(name));
