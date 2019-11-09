@@ -1,3 +1,12 @@
+/*
+ * @Author: your name
+ * @Date: 2019-10-31 20:37:49
+ * @LastEditTime: 2019-11-09 18:44:46
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: \tinyfjing\UnitTest\LexicalTest.h
+ */
+
 #ifndef TINYFJING_LEXICALTEST_H
 #define TINYFJING_LEXICALTEST_H
 
@@ -88,7 +97,6 @@ TEST(Lexical, string) {
 
     ASSERT_EQ(ptr->tokens[4].str, "lisicen");
     ASSERT_EQ(ptr->tokens[4].tokenType, CodeTokenType::String);
-
 }
 
 TEST(parser, numcomput) {

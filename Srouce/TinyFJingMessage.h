@@ -1,3 +1,12 @@
+/*
+ * @Author: kamijoucen
+ * @Date: 2019-10-29 23:11:48
+ * @LastEditTime: 2019-11-09 19:37:40
+ * @LastEditors: kamijoucen
+ * @Description: 
+ * @FilePath: \tinyfjing\Srouce\TinyFJingMessage.h
+ * @
+ */
 #ifndef TINYFJING_TINYFJINGMESSAGE_H
 #define TINYFJING_TINYFJINGMESSAGE_H
 
