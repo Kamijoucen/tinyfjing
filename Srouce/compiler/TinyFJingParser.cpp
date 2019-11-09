@@ -1,7 +1,7 @@
 /*
  * @Author: kamijoucen
  * @Date: 2019-11-09 16:26:50
- * @LastEditTime: 2019-11-09 19:38:37
+ * @LastEditTime: 2019-11-10 01:27:20
  * @LastEditors: kamijoucen
  * @Description: 
  * @FilePath: \tinyfjing\Srouce\compiler\TinyFJingParser.cpp
@@ -119,6 +119,23 @@ Parser::Statement::ParseUsingStatement(Parser::Iterator &reading, Parser::Iterat
 ast::IfStatementAst::Ptr
 Parser::Statement::ParseIfStatement(Parser::Iterator &reading, Parser::Iterator &end)
 {
+    if (reading == end)
+    {
+        throw std::runtime_error(GetFormatMsg(T("TOKEN_ENDED")));
+    }
+    if (reading->tokenType != CodeTokenType::If)
+    {
+        throw std::runtime_error(GetFormatMsg(T("TOKEN_ERROR")));
+    }
+    reading++; // eat if
+
+    auto condition = Parser::Expression::ParseExpression(reading, end);
+    if (condition == nullptr)
+    {
+        // todo 这里要补充注释
+        throw std::runtime_error(GetFormatMsg(T("TOKEN_ERROR")));
+    }
+    // todo parse if body
     return nullptr;
 }
 

@@ -1,10 +1,11 @@
 /*
- * @Author: your name
+ * @Author: kamijoucen
  * @Date: 2019-10-31 20:37:49
- * @LastEditTime: 2019-11-09 18:44:46
- * @LastEditors: Please set LastEditors
- * @Description: In User Settings Edit
+ * @LastEditTime: 2019-11-09 22:14:01
+ * @LastEditors: kamijoucen
+ * @Description: 
  * @FilePath: \tinyfjing\UnitTest\LexicalTest.h
+ * @
  */
 
 #ifndef TINYFJING_LEXICALTEST_H
@@ -20,7 +21,8 @@ using namespace std;
 using namespace tinyfjing;
 using namespace tinyfjing::compiler;
 
-TEST(Lexical, identifier) {
+TEST(Lexical, identifier)
+{
     auto code = T("name true\n\tadd  var");
     CodeFile::Ptr ptr = CodeFile::Parse(code);
 
@@ -39,7 +41,8 @@ TEST(Lexical, identifier) {
     ASSERT_EQ(ptr->tokens[3].tokenType, CodeTokenType::Var);
 }
 
-TEST(Lexical, number) {
+TEST(Lexical, number)
+{
     auto code = T("30\n12.4 3");
     CodeFile::Ptr ptr = CodeFile::Parse(code);
 
@@ -58,7 +61,8 @@ TEST(Lexical, number) {
     ASSERT_EQ(ptr->tokens[2].data.int_value, 3);
 }
 
-TEST(Lexical, op) {
+TEST(Lexical, op)
+{
     auto code = T("= ==");
     CodeFile::Ptr ptr = CodeFile::Parse(code);
     ASSERT_EQ(ptr->tokens.size(), 2);
@@ -76,7 +80,8 @@ TEST(Lexical, op) {
     ASSERT_EQ(ptr3->tokens[0].tokenType, CodeTokenType::EQ);
 }
 
-TEST(Lexical, string) {
+TEST(Lexical, string)
+{
     auto code = T("a1 \"fjing\" sfc\n55\"lisicen\"");
     CodeFile::Ptr ptr = CodeFile::Parse(code);
 
@@ -99,7 +104,8 @@ TEST(Lexical, string) {
     ASSERT_EQ(ptr->tokens[4].tokenType, CodeTokenType::String);
 }
 
-TEST(parser, numcomput) {
+TEST(parser, numcomput)
+{
     auto code = T("1+2* 3");
     CodeFile::Ptr ptr = CodeFile::Parse(code);
     ASSERT_EQ(ptr->tokens.size(), 5);
@@ -114,7 +120,7 @@ TEST(parser, numcomput) {
 
     auto code3 = T("true and false");
     CodeFile::Ptr ptr3 = CodeFile::Parse(code3);
-    ASSERT_EQ(ptr3->tokens.size(), 3);
+    ASSERT_EQ(ptr3->tokens.size(), 4);
     auto begin3 = ptr3->tokens.begin(), end3 = ptr3->tokens.end();
     auto exp3 = Parser::Expression::ParseExpression(begin3, end3);
 }
