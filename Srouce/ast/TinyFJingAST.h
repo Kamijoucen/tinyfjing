@@ -1,7 +1,7 @@
 /*
  * @Author: kamijoucen
  * @Date: 2019-10-30 22:37:05
- * @LastEditTime: 2019-11-09 19:37:57
+ * @LastEditTime: 2019-11-10 18:48:12
  * @LastEditors: kamijoucen
  * @Description: 
  * @FilePath: \tinyfjing\Srouce\ast\TinyFJingAST.h
@@ -137,6 +137,10 @@ public:
     string_t name;
 };
 
+
+/**
+ * todo 这里不应该解析为 FunctionFcallAst， 应该解析为 ident， call，两个部分
+ */
 class FunctionCallAst : public BaseAst
 {
 public:
